@@ -1,9 +1,22 @@
-﻿@{
+﻿
+@using Microsoft.AspNetCore.Identity
+@using CMPG_323_Project2.Areas.Identity.Data
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+@{
     ViewData["Title"] = "Home Page";
 }
 
+
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Please login at the top right hand side. Otherwise create an account when clicking on the register button.</p>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <p>welcome @UserManager.GetUserName(User)</p>
+    }
+    else
+    {
+        <p>Please login at the top right hand side. Otherwise create an account when clicking on the register button.</p>
+    }
 </div>
 
