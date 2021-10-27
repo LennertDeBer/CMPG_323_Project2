@@ -4,12 +4,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CMPG_323_Project2.Data;
 
 namespace CMPG_323_Project2
 {
@@ -26,7 +24,6 @@ namespace CMPG_323_Project2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<CMPG_DBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AutContextConnection")));
             services.AddRazorPages();
         }
 
