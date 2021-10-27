@@ -25,7 +25,7 @@ namespace CMPG_323_Project2.Migrations
             modelBuilder.Entity("CMPG_323_Project2.Models.AspNetUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -99,7 +99,7 @@ namespace CMPG_323_Project2.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -123,7 +123,7 @@ namespace CMPG_323_Project2.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
