@@ -1,6 +1,8 @@
+using CMPG_323_Project2.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +26,7 @@ namespace CMPG_323_Project2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<CMPG_DBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AutContextConnection")));
             services.AddRazorPages();
         }
 

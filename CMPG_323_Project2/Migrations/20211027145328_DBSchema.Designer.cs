@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CMPG_323_Project2.Migrations
 {
     [DbContext(typeof(CMPG_DBContext))]
-    [Migration("20211027132025_DBshema")]
-    partial class DBshema
+    [Migration("20211027145328_DBSchema")]
+    partial class DBSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,7 +25,7 @@ namespace CMPG_323_Project2.Migrations
             modelBuilder.Entity("CMPG_323_Project2.Models.AspNetUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -99,7 +99,7 @@ namespace CMPG_323_Project2.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -123,7 +123,7 @@ namespace CMPG_323_Project2.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -134,7 +134,7 @@ namespace CMPG_323_Project2.Migrations
 
             modelBuilder.Entity("CMPG_323_Project2.Models.Photo", b =>
                 {
-                    b.Property<int?>("PhotoId")
+                    b.Property<int>("PhotoId")
                         .HasColumnType("int")
                         .HasColumnName("Photo_ID");
 
@@ -143,6 +143,8 @@ namespace CMPG_323_Project2.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)")
                         .HasColumnName("Photo_URL");
+
+                    b.HasKey("PhotoId");
 
                     b.ToTable("Photo");
                 });
