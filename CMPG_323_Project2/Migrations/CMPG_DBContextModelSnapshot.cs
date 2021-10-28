@@ -147,6 +147,35 @@ namespace CMPG_323_Project2.Migrations
                     b.ToTable("Photo");
                 });
 
+            modelBuilder.Entity("CMPG_323_Project2.Models.UserPhoto", b =>
+                {
+                    b.Property<int>("ShareId")
+                        .HasColumnType("int")
+                        .HasColumnName("Share_ID");
+
+                    b.Property<int?>("PhotoId")
+                        .HasColumnType("int")
+                        .HasColumnName("Photo_ID");
+
+                    b.Property<string>("RecepientUserId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Recepient_User_ID");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("User_ID");
+
+                    b.HasKey("ShareId");
+
+                    b.HasIndex(new[] { "PhotoId" }, "IX_UserPhoto_Photo_ID");
+
+                    b.HasIndex(new[] { "RecepientUserId" }, "IX_UserPhoto_Recepient_User_ID");
+
+                    b.HasIndex(new[] { "UserId" }, "IX_UserPhoto_User_ID");
+
+                    b.ToTable("UserPhoto");
+                });
+
             modelBuilder.Entity("CMPG_323_Project2.Models.AspNetUserClaim", b =>
                 {
                     b.HasOne("CMPG_323_Project2.Models.AspNetUser", "User")
@@ -169,11 +198,44 @@ namespace CMPG_323_Project2.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CMPG_323_Project2.Models.UserPhoto", b =>
+                {
+                    b.HasOne("CMPG_323_Project2.Models.Photo", "Photo")
+                        .WithMany("UserPhotos")
+                        .HasForeignKey("PhotoId")
+                        .HasConstraintName("FK_UserPhoto_Photo");
+
+                    b.HasOne("CMPG_323_Project2.Models.AspNetUser", "RecepientUser")
+                        .WithMany("UserPhotoRecepientUsers")
+                        .HasForeignKey("RecepientUserId")
+                        .HasConstraintName("FK_UserPhoto_AspNetUsers");
+
+                    b.HasOne("CMPG_323_Project2.Models.AspNetUser", "User")
+                        .WithMany("UserPhotoUsers")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK_UserPhoto_UserPhoto");
+
+                    b.Navigation("Photo");
+
+                    b.Navigation("RecepientUser");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CMPG_323_Project2.Models.AspNetUser", b =>
                 {
                     b.Navigation("AspNetUserClaims");
 
                     b.Navigation("AspNetUserLogins");
+
+                    b.Navigation("UserPhotoRecepientUsers");
+
+                    b.Navigation("UserPhotoUsers");
+                });
+
+            modelBuilder.Entity("CMPG_323_Project2.Models.Photo", b =>
+                {
+                    b.Navigation("UserPhotos");
                 });
 #pragma warning restore 612, 618
         }

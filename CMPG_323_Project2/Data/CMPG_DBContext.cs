@@ -22,6 +22,7 @@ namespace CMPG_323_Project2.Data
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<Photo> Photos { get; set; }
+        public virtual DbSet<UserPhoto> UserPhotos { get; set; }
 
 //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //        {
@@ -53,6 +54,26 @@ namespace CMPG_323_Project2.Data
                 entity.Property(e => e.PhotoId).ValueGeneratedNever();
 
                 entity.Property(e => e.PhotoUrl).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<UserPhoto>(entity =>
+            {
+                entity.Property(e => e.ShareId).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Photo)
+                    .WithMany(p => p.UserPhotos)
+                    .HasForeignKey(d => d.PhotoId)
+                    .HasConstraintName("FK_UserPhoto_Photo");
+
+                entity.HasOne(d => d.RecepientUser)
+                    .WithMany(p => p.UserPhotoRecepientUsers)
+                    .HasForeignKey(d => d.RecepientUserId)
+                    .HasConstraintName("FK_UserPhoto_AspNetUsers");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserPhotoUsers)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_UserPhoto_UserPhoto");
             });
 
             OnModelCreatingPartial(modelBuilder);

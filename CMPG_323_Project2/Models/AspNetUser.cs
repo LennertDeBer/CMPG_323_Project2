@@ -15,6 +15,8 @@ namespace CMPG_323_Project2.Models
         {
             AspNetUserClaims = new HashSet<AspNetUserClaim>();
             AspNetUserLogins = new HashSet<AspNetUserLogin>();
+            UserPhotoRecepientUsers = new HashSet<UserPhoto>();
+            UserPhotoUsers = new HashSet<UserPhoto>();
         }
 
         [Key]
@@ -42,5 +44,9 @@ namespace CMPG_323_Project2.Models
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
         [InverseProperty(nameof(AspNetUserLogin.User))]
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
+        [InverseProperty(nameof(UserPhoto.RecepientUser))]
+        public virtual ICollection<UserPhoto> UserPhotoRecepientUsers { get; set; }
+        [InverseProperty(nameof(UserPhoto.User))]
+        public virtual ICollection<UserPhoto> UserPhotoUsers { get; set; }
     }
 }

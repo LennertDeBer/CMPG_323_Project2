@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CMPG_323_Project2.Migrations
 {
-    public partial class DBSchema : Migration
+    public partial class DBshema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -85,6 +85,38 @@ namespace CMPG_323_Project2.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserPhoto",
+                columns: table => new
+                {
+                    Share_ID = table.Column<int>(type: "int", nullable: false),
+                    User_ID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Photo_ID = table.Column<int>(type: "int", nullable: true),
+                    Recepient_User_ID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPhoto", x => x.Share_ID);
+                    table.ForeignKey(
+                        name: "FK_UserPhoto_AspNetUsers",
+                        column: x => x.Recepient_User_ID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserPhoto_Photo",
+                        column: x => x.Photo_ID,
+                        principalTable: "Photo",
+                        principalColumn: "Photo_ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserPhoto_UserPhoto",
+                        column: x => x.User_ID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
                 table: "AspNetUserClaims",
@@ -106,6 +138,21 @@ namespace CMPG_323_Project2.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "([NormalizedUserName] IS NOT NULL)");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPhoto_Photo_ID",
+                table: "UserPhoto",
+                column: "Photo_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPhoto_Recepient_User_ID",
+                table: "UserPhoto",
+                column: "Recepient_User_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPhoto_User_ID",
+                table: "UserPhoto",
+                column: "User_ID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -117,10 +164,13 @@ namespace CMPG_323_Project2.Migrations
                 name: "AspNetUserLogins");
 
             migrationBuilder.DropTable(
-                name: "Photo");
+                name: "UserPhoto");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Photo");
         }
     }
 }
