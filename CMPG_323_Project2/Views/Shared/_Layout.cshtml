@@ -1,5 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Identity
+@using CMPG_323_Project2.Areas.Identity.Data
 
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,20 +26,44 @@
                     <ul class="navbar-nav flex-grow-1">
 
 
-                        @if(@Context.Request.GetEncodedUrl().ToString()=="https://localhost:44347/UserPhoto")
+                        @if (@Context.Request.GetEncodedUrl().ToString() == "https://localhost:44347/UserPhoto")
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="MyPhoto">My photo's</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="SharedWith">Shared with me</a>
+                            </li>
                         }
-                        @if(@Context.Request.GetEncodedUrl().ToString()=="https://localhost:44347/")
+                        @if (@Context.Request.GetEncodedUrl().ToString() == "https://localhost:44347/UserPhoto/MyPhoto")
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="Index">UserPhoto</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="Index">All Photo's</a>
+                            </li>
+                        }
+                        @if (@Context.Request.GetEncodedUrl().ToString() == "https://localhost:44347/UserPhoto/SharedWith")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="Index">All Photo's</a>
+                            </li>
+                        }
+                        @if (@Context.Request.GetEncodedUrl().ToString() == "https://localhost:44347/" && @UserManager.GetUserName(User) != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="Index">UserPhoto</a>
+                            </li>
 
                         }
-                        
+
                     </ul>
                     <partial name="_LoginPartial.cshtml" />
                 </div>
@@ -45,6 +73,7 @@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
+            @*<p> @Context.Request.GetEncodedUrl().ToString()</p>*@
         </main>
     </div>
 

@@ -39,5 +39,46 @@ namespace CMPG_323_Project2.Controllers
                 return View(userViewModelImages);
            
         }
+        public IActionResult MyPhoto()
+        {
+
+
+            var usid = _UserManager.GetUserId(HttpContext.User);
+            List<AspNetUser> accountusers = _DBContext.AspNetUsers.ToList();
+            List<UserPhoto> user_image_link = _DBContext.UserPhotos.ToList();
+            List<Photo> images = _DBContext.Photos.ToList();
+            var userViewModelImages = from uil in user_image_link
+                                      from u in accountusers
+                                      from i in images
+                                      where u.Id == usid
+                                      && (uil.UserId == u.Id)
+                                      where uil.PhotoId == i.PhotoId
+                                      select new UserViewModelPhoto { userVm = u, photoVm = i };
+            return View(userViewModelImages);
+
+        }
+        public IActionResult SharedWith()
+        {
+
+
+            var usid = _UserManager.GetUserId(HttpContext.User);
+            List<AspNetUser> accountusers = _DBContext.AspNetUsers.ToList();
+            List<UserPhoto> user_image_link = _DBContext.UserPhotos.ToList();
+            List<Photo> images = _DBContext.Photos.ToList();
+            var userViewModelImages = from uil in user_image_link
+                                      from u in accountusers
+                                      from sender in accountusers
+                                      from i in images
+                                      where sender.Id==uil.UserId
+                                      && uil.RecepientUserId==usid
+                                      && uil.RecepientUserId != uil.UserId
+                                      where u.Id == usid
+                                      && (uil.RecepientUserId == u.Id 
+                                      && uil.RecepientUserId != uil.UserId)
+                                      where uil.PhotoId == i.PhotoId
+                                      select new UserViewModelPhoto { userVm = sender, photoVm = i };
+            return View(userViewModelImages);
+
+        }
     }
 }
