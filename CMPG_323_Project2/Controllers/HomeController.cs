@@ -1,4 +1,5 @@
-﻿using CMPG_323_Project2.Models;
+﻿
+using CMPG_323_Project2.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,11 +13,11 @@ namespace CMPG_323_Project2.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-        }
+    }
 
         public IActionResult Index()
         {
