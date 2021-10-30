@@ -102,19 +102,19 @@ namespace CMPG_323_Project2.Migrations
                         column: x => x.Recepient_User_ID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_UserPhoto_Photo",
                         column: x => x.Photo_ID,
                         principalTable: "Photo",
                         principalColumn: "Photo_ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserPhoto_UserPhoto",
                         column: x => x.User_ID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<CMPG_323_Project2.Models.Photo>
+
+
+    <style>
+        .avatar {
+            vertical-align: middle;
+            width: 410px;
+            height: 175px;
+        }
+    </style>
+
+    @{
+        ViewData["Title"] = "index";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <h1>index</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhotoUrl)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.PhotoUrl" alt="@item.PhotoUrl" class="avatar" />
+
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.PhotoId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.PhotoId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.PhotoId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
