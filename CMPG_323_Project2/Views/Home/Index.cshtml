@@ -12,7 +12,7 @@
     <h1 class="display-4">Welcome</h1>
     @if (SignInManager.IsSignedIn(User))
     {
-        <p>welcome @UserManager.GetUserName(User)</p>
+        <p>@UserManager.GetUserName(User)</p>
     }
     else
     {

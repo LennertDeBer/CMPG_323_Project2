@@ -21,17 +21,18 @@ namespace CMPG_323_Project2.Data
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<MetaDatum> MetaData { get; set; }
         public virtual DbSet<Photo> Photos { get; set; }
         public virtual DbSet<UserPhoto> UserPhotos { get; set; }
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Data Source=(local);Initial Catalog=CMPG_DB;Integrated Security=True;");
-//            }
-//        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=(local);Initial Catalog=CMPG_DB;Integrated Security=True;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,6 +50,17 @@ namespace CMPG_323_Project2.Data
                 entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
             });
 
+            modelBuilder.Entity<MetaDatum>(entity =>
+            {
+                entity.Property(e => e.MetadataId).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Photo)
+                    .WithMany(p => p.MetaData)
+                    .HasForeignKey(d => d.PhotoId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_MetaData_Photo");
+            });
+
             modelBuilder.Entity<Photo>(entity =>
             {
                 entity.Property(e => e.PhotoId).ValueGeneratedNever();
@@ -63,6 +75,7 @@ namespace CMPG_323_Project2.Data
                 entity.HasOne(d => d.Photo)
                     .WithMany(p => p.UserPhotos)
                     .HasForeignKey(d => d.PhotoId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_UserPhoto_Photo");
 
                 entity.HasOne(d => d.RecepientUser)

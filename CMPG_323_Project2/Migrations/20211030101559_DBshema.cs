@@ -86,6 +86,28 @@ namespace CMPG_323_Project2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MetaData",
+                columns: table => new
+                {
+                    Metadata_ID = table.Column<int>(type: "int", nullable: false),
+                    Geolocation = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Tags = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Captured_Date = table.Column<DateTime>(type: "date", nullable: true),
+                    Captured_By = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Photo_ID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MetaData", x => x.Metadata_ID);
+                    table.ForeignKey(
+                        name: "FK_MetaData_Photo",
+                        column: x => x.Photo_ID,
+                        principalTable: "Photo",
+                        principalColumn: "Photo_ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserPhoto",
                 columns: table => new
                 {
@@ -102,7 +124,7 @@ namespace CMPG_323_Project2.Migrations
                         column: x => x.Recepient_User_ID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_UserPhoto_Photo",
                         column: x => x.Photo_ID,
@@ -114,7 +136,7 @@ namespace CMPG_323_Project2.Migrations
                         column: x => x.User_ID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -140,6 +162,11 @@ namespace CMPG_323_Project2.Migrations
                 filter: "([NormalizedUserName] IS NOT NULL)");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MetaData_Photo_ID",
+                table: "MetaData",
+                column: "Photo_ID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserPhoto_Photo_ID",
                 table: "UserPhoto",
                 column: "Photo_ID");
@@ -162,6 +189,9 @@ namespace CMPG_323_Project2.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "MetaData");
 
             migrationBuilder.DropTable(
                 name: "UserPhoto");

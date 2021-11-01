@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CMPG_323_Project2.Migrations
 {
     [DbContext(typeof(CMPG_DBContext))]
-    [Migration("20211028124558_DBshema")]
+    [Migration("20211030101559_DBshema")]
     partial class DBshema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,40 @@ namespace CMPG_323_Project2.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
+            modelBuilder.Entity("CMPG_323_Project2.Models.MetaDatum", b =>
+                {
+                    b.Property<int>("MetadataId")
+                        .HasColumnType("int")
+                        .HasColumnName("Metadata_ID");
+
+                    b.Property<string>("CapturedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Captured_By");
+
+                    b.Property<DateTime?>("CapturedDate")
+                        .HasColumnType("date")
+                        .HasColumnName("Captured_Date");
+
+                    b.Property<string>("Geolocation")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("PhotoId")
+                        .HasColumnType("int")
+                        .HasColumnName("Photo_ID");
+
+                    b.Property<string>("Tags")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("MetadataId");
+
+                    b.HasIndex("PhotoId");
+
+                    b.ToTable("MetaData");
+                });
+
             modelBuilder.Entity("CMPG_323_Project2.Models.Photo", b =>
                 {
                     b.Property<int>("PhotoId")
@@ -200,12 +234,24 @@ namespace CMPG_323_Project2.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CMPG_323_Project2.Models.MetaDatum", b =>
+                {
+                    b.HasOne("CMPG_323_Project2.Models.Photo", "Photo")
+                        .WithMany("MetaData")
+                        .HasForeignKey("PhotoId")
+                        .HasConstraintName("FK_MetaData_Photo")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Photo");
+                });
+
             modelBuilder.Entity("CMPG_323_Project2.Models.UserPhoto", b =>
                 {
                     b.HasOne("CMPG_323_Project2.Models.Photo", "Photo")
                         .WithMany("UserPhotos")
                         .HasForeignKey("PhotoId")
-                        .HasConstraintName("FK_UserPhoto_Photo");
+                        .HasConstraintName("FK_UserPhoto_Photo")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CMPG_323_Project2.Models.AspNetUser", "RecepientUser")
                         .WithMany("UserPhotoRecepientUsers")
@@ -237,6 +283,8 @@ namespace CMPG_323_Project2.Migrations
 
             modelBuilder.Entity("CMPG_323_Project2.Models.Photo", b =>
                 {
+                    b.Navigation("MetaData");
+
                     b.Navigation("UserPhotos");
                 });
 #pragma warning restore 612, 618

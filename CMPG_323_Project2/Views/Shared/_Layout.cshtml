@@ -59,11 +59,16 @@
                         @if (@Context.Request.GetEncodedUrl().ToString() == "https://localhost:44347/" && @UserManager.GetUserName(User) != null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="Index">UserPhoto</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="Index">My Photo's</a>
                             </li>
-                            <li class="nav-item">
+
+                            //testc CRUD
+                            @*<li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Photo" asp-action="Index">Photo1</a>
-                            </li>
+                            </li>*@
+                            @*<li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="MetaData" asp-action="Index">MetaData</a>
+                            </li>*@
                         }
 
                     </ul>

@@ -14,17 +14,18 @@ namespace CMPG_323_Project2.Controllers
 
         private readonly CMPG_DBContext _DBContext;
 
-      
+
         public PhotoController(CMPG_DBContext DBContext)
         {
             _DBContext = DBContext;
         }
         public IActionResult Index()
         {
-           
+
             List<Photo> photos = _DBContext.Photos.ToList();
             return View(photos);
         }
+       
 
         [HttpGet]
         public IActionResult Create(int Id)
@@ -40,13 +41,13 @@ namespace CMPG_323_Project2.Controllers
             {
                 auid = _DBContext.Photos.Max(auId => auId.PhotoId);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 auid = 1;
             }
-            
 
-        
+
+
             int auNo;
             int.TryParse(auid.ToString(), out auNo);
             if (auNo > 0)
