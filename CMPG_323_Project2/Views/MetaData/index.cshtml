@@ -26,7 +26,7 @@
                     @Html.DisplayNameFor(model => model.CapturedBy)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Photo)
+                    @Html.DisplayNameFor(model => model.PhotoId)
                 </th>
                 <th></th>
             </tr>
@@ -47,7 +47,7 @@
                     @Html.DisplayFor(modelItem => item.CapturedBy)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Photo.PhotoId)
+                    @Html.DisplayFor(modelItem => item.PhotoId)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.MetadataId">Edit</a> |

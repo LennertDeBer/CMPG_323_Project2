@@ -1,0 +1,72 @@
+﻿@model CMPG_323_Project2.Models.MetaDatum
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>MetaDatum</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MetadataId" />
+            @*<div class="form-group">
+            <label asp-for="MetadataId" class="control-label"></label>
+            <input asp-for="MetadataId" class="form-control" />
+            <span asp-validation-for="MetadataId" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <label asp-for="Geolocation" class="control-label"></label>
+                <input asp-for="Geolocation" class="form-control" />
+                <span asp-validation-for="Geolocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <input asp-for="Tags" class="form-control" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CapturedDate" class="control-label"></label>
+                <input asp-for="CapturedDate" class="form-control" />
+                <span asp-validation-for="CapturedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CapturedBy" class="control-label"></label>
+                <input asp-for="CapturedBy" class="form-control" />
+                <span asp-validation-for="CapturedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhotoId" class="control-label"></label>
+                @{ CMPG_323_Project2.Data.CMPG_DBContext DBContext = new CMPG_323_Project2.Data.CMPG_DBContext();
+                    List<CMPG_323_Project2.Models.Photo> ListPhotos = DBContext.Photos.ToList();
+                    <select asp-for="PhotoId" class="form-control">
+                        @{
+                            <option value="" disabled hidden selected>select PhotoId</option>
+                            foreach (CMPG_323_Project2.Models.Photo p in ListPhotos)
+                            {
+                                <option value="@p.PhotoId">@p.PhotoId</option>
+                            }
+                        }
+                    </select>
+                }
+                <span asp-validation-for="PhotoId" class="text-danger"></span>
+                @*<select asp-for="PhotoId" class="form-control" asp-items="ViewBag.PhotoId"></select>*@
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

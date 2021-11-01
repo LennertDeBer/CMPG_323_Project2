@@ -80,5 +80,12 @@ namespace CMPG_323_Project2.Controllers
 
             return RedirectToAction("index");
         }
+
+        public IActionResult Details(int Id)
+        {
+            MetaDatum metaDatum = _DBContext.MetaData.Where(p => p.PhotoId == Id).FirstOrDefault();
+            return View(metaDatum);
+
+        }
     }
 }
