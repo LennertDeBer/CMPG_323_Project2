@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CMPG_323_Project2.Migrations
 {
     [DbContext(typeof(CMPG_DBContext))]
-    [Migration("20211030101559_DBshema")]
+    [Migration("20211101062957_DBshema")]
     partial class DBshema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,22 @@ namespace CMPG_323_Project2.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CMPG_323_Project2.Models.Album", b =>
+                {
+                    b.Property<int>("AlbumId")
+                        .HasColumnType("int")
+                        .HasColumnName("Album_ID");
+
+                    b.Property<string>("AlbumName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Album_Name");
+
+                    b.HasKey("AlbumId");
+
+                    b.ToTable("Album");
+                });
 
             modelBuilder.Entity("CMPG_323_Project2.Models.AspNetUser", b =>
                 {
@@ -132,6 +148,29 @@ namespace CMPG_323_Project2.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
+            modelBuilder.Entity("CMPG_323_Project2.Models.Contain", b =>
+                {
+                    b.Property<int>("ContainId")
+                        .HasColumnType("int")
+                        .HasColumnName("Contain_ID");
+
+                    b.Property<int?>("AlbumId")
+                        .HasColumnType("int")
+                        .HasColumnName("Album_ID");
+
+                    b.Property<int?>("PhotoId")
+                        .HasColumnType("int")
+                        .HasColumnName("Photo_ID");
+
+                    b.HasKey("ContainId");
+
+                    b.HasIndex("AlbumId");
+
+                    b.HasIndex("PhotoId");
+
+                    b.ToTable("Contain");
+                });
+
             modelBuilder.Entity("CMPG_323_Project2.Models.MetaDatum", b =>
                 {
                     b.Property<int>("MetadataId")
@@ -161,7 +200,7 @@ namespace CMPG_323_Project2.Migrations
 
                     b.HasKey("MetadataId");
 
-                    b.HasIndex("PhotoId");
+                    b.HasIndex(new[] { "PhotoId" }, "IX_MetaData_Photo_ID");
 
                     b.ToTable("MetaData");
                 });
@@ -183,11 +222,48 @@ namespace CMPG_323_Project2.Migrations
                     b.ToTable("Photo");
                 });
 
+            modelBuilder.Entity("CMPG_323_Project2.Models.ShareAlbum", b =>
+                {
+                    b.Property<int>("ShareAlbumId")
+                        .HasColumnType("int")
+                        .HasColumnName("Share_Album_ID");
+
+                    b.Property<int?>("AlbumId")
+                        .HasColumnType("int")
+                        .HasColumnName("Album_ID");
+
+                    b.Property<string>("RecipientUserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Recipient_User_ID");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("User_ID");
+
+                    b.HasKey("ShareAlbumId");
+
+                    b.HasIndex("AlbumId");
+
+                    b.HasIndex("RecipientUserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Share_Album");
+                });
+
             modelBuilder.Entity("CMPG_323_Project2.Models.UserPhoto", b =>
                 {
                     b.Property<int>("ShareId")
                         .HasColumnType("int")
                         .HasColumnName("Share_ID");
+
+                    b.Property<byte[]>("AccessGranted")
+                        .HasMaxLength(1)
+                        .HasColumnType("binary(1)")
+                        .HasColumnName("Access_Granted")
+                        .IsFixedLength(true);
 
                     b.Property<int?>("PhotoId")
                         .HasColumnType("int")
@@ -234,6 +310,24 @@ namespace CMPG_323_Project2.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CMPG_323_Project2.Models.Contain", b =>
+                {
+                    b.HasOne("CMPG_323_Project2.Models.Album", "Album")
+                        .WithMany("Contains")
+                        .HasForeignKey("AlbumId")
+                        .HasConstraintName("FK_Contain_Album")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CMPG_323_Project2.Models.Photo", "Photo")
+                        .WithMany("Contains")
+                        .HasForeignKey("PhotoId")
+                        .HasConstraintName("FK_Contain_Photo");
+
+                    b.Navigation("Album");
+
+                    b.Navigation("Photo");
+                });
+
             modelBuilder.Entity("CMPG_323_Project2.Models.MetaDatum", b =>
                 {
                     b.HasOne("CMPG_323_Project2.Models.Photo", "Photo")
@@ -243,6 +337,31 @@ namespace CMPG_323_Project2.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Photo");
+                });
+
+            modelBuilder.Entity("CMPG_323_Project2.Models.ShareAlbum", b =>
+                {
+                    b.HasOne("CMPG_323_Project2.Models.Album", "Album")
+                        .WithMany("ShareAlbums")
+                        .HasForeignKey("AlbumId")
+                        .HasConstraintName("FK_Share_Album_Album")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CMPG_323_Project2.Models.AspNetUser", "RecipientUser")
+                        .WithMany("ShareAlbumRecipientUsers")
+                        .HasForeignKey("RecipientUserId")
+                        .HasConstraintName("FK_Share_Album_AspNetUsers1");
+
+                    b.HasOne("CMPG_323_Project2.Models.AspNetUser", "User")
+                        .WithMany("ShareAlbumUsers")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK_Share_Album_AspNetUsers");
+
+                    b.Navigation("Album");
+
+                    b.Navigation("RecipientUser");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CMPG_323_Project2.Models.UserPhoto", b =>
@@ -270,11 +389,22 @@ namespace CMPG_323_Project2.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CMPG_323_Project2.Models.Album", b =>
+                {
+                    b.Navigation("Contains");
+
+                    b.Navigation("ShareAlbums");
+                });
+
             modelBuilder.Entity("CMPG_323_Project2.Models.AspNetUser", b =>
                 {
                     b.Navigation("AspNetUserClaims");
 
                     b.Navigation("AspNetUserLogins");
+
+                    b.Navigation("ShareAlbumRecipientUsers");
+
+                    b.Navigation("ShareAlbumUsers");
 
                     b.Navigation("UserPhotoRecepientUsers");
 
@@ -283,6 +413,8 @@ namespace CMPG_323_Project2.Migrations
 
             modelBuilder.Entity("CMPG_323_Project2.Models.Photo", b =>
                 {
+                    b.Navigation("Contains");
+
                     b.Navigation("MetaData");
 
                     b.Navigation("UserPhotos");

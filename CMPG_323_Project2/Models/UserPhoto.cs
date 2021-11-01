@@ -23,6 +23,9 @@ namespace CMPG_323_Project2.Models
         public int? PhotoId { get; set; }
         [Column("Recepient_User_ID")]
         public string RecepientUserId { get; set; }
+        [Column("Access_Granted")]
+        [MaxLength(1)]
+        public byte[] AccessGranted { get; set; }
 
         [ForeignKey(nameof(PhotoId))]
         [InverseProperty("UserPhotos")]

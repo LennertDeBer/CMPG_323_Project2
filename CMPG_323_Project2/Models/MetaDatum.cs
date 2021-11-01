@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CMPG_323_Project2.Models
 {
+    [Index(nameof(PhotoId), Name = "IX_MetaData_Photo_ID")]
     public partial class MetaDatum
     {
         [Key]

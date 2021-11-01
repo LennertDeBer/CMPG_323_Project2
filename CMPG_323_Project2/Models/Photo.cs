@@ -13,6 +13,7 @@ namespace CMPG_323_Project2.Models
     {
         public Photo()
         {
+            Contains = new HashSet<Contain>();
             MetaData = new HashSet<MetaDatum>();
             UserPhotos = new HashSet<UserPhoto>();
         }
@@ -24,6 +25,8 @@ namespace CMPG_323_Project2.Models
         [StringLength(50)]
         public string PhotoUrl { get; set; }
 
+        [InverseProperty(nameof(Contain.Photo))]
+        public virtual ICollection<Contain> Contains { get; set; }
         [InverseProperty(nameof(MetaDatum.Photo))]
         public virtual ICollection<MetaDatum> MetaData { get; set; }
         [InverseProperty(nameof(UserPhoto.Photo))]

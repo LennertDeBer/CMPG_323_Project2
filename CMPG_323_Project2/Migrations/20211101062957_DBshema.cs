@@ -8,6 +8,18 @@ namespace CMPG_323_Project2.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Album",
+                columns: table => new
+                {
+                    Album_ID = table.Column<int>(type: "int", nullable: false),
+                    Album_Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Album", x => x.Album_ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -86,6 +98,63 @@ namespace CMPG_323_Project2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Share_Album",
+                columns: table => new
+                {
+                    Share_Album_ID = table.Column<int>(type: "int", nullable: false),
+                    User_ID = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
+                    Album_ID = table.Column<int>(type: "int", nullable: true),
+                    Recipient_User_ID = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Share_Album", x => x.Share_Album_ID);
+                    table.ForeignKey(
+                        name: "FK_Share_Album_Album",
+                        column: x => x.Album_ID,
+                        principalTable: "Album",
+                        principalColumn: "Album_ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Share_Album_AspNetUsers",
+                        column: x => x.User_ID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Share_Album_AspNetUsers1",
+                        column: x => x.Recipient_User_ID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Contain",
+                columns: table => new
+                {
+                    Contain_ID = table.Column<int>(type: "int", nullable: false),
+                    Album_ID = table.Column<int>(type: "int", nullable: true),
+                    Photo_ID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contain", x => x.Contain_ID);
+                    table.ForeignKey(
+                        name: "FK_Contain_Album",
+                        column: x => x.Album_ID,
+                        principalTable: "Album",
+                        principalColumn: "Album_ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Contain_Photo",
+                        column: x => x.Photo_ID,
+                        principalTable: "Photo",
+                        principalColumn: "Photo_ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MetaData",
                 columns: table => new
                 {
@@ -114,7 +183,8 @@ namespace CMPG_323_Project2.Migrations
                     Share_ID = table.Column<int>(type: "int", nullable: false),
                     User_ID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Photo_ID = table.Column<int>(type: "int", nullable: true),
-                    Recepient_User_ID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Recepient_User_ID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Access_Granted = table.Column<byte[]>(type: "binary(1)", fixedLength: true, maxLength: 1, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -162,9 +232,34 @@ namespace CMPG_323_Project2.Migrations
                 filter: "([NormalizedUserName] IS NOT NULL)");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Contain_Album_ID",
+                table: "Contain",
+                column: "Album_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contain_Photo_ID",
+                table: "Contain",
+                column: "Photo_ID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MetaData_Photo_ID",
                 table: "MetaData",
                 column: "Photo_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Share_Album_Album_ID",
+                table: "Share_Album",
+                column: "Album_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Share_Album_Recipient_User_ID",
+                table: "Share_Album",
+                column: "Recipient_User_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Share_Album_User_ID",
+                table: "Share_Album",
+                column: "User_ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserPhoto_Photo_ID",
@@ -191,10 +286,19 @@ namespace CMPG_323_Project2.Migrations
                 name: "AspNetUserLogins");
 
             migrationBuilder.DropTable(
+                name: "Contain");
+
+            migrationBuilder.DropTable(
                 name: "MetaData");
 
             migrationBuilder.DropTable(
+                name: "Share_Album");
+
+            migrationBuilder.DropTable(
                 name: "UserPhoto");
+
+            migrationBuilder.DropTable(
+                name: "Album");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

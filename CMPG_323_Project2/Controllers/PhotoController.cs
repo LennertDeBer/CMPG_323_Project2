@@ -25,7 +25,7 @@ namespace CMPG_323_Project2.Controllers
             List<Photo> photos = _DBContext.Photos.ToList();
             return View(photos);
         }
-       
+
 
         [HttpGet]
         public IActionResult Create(int Id)

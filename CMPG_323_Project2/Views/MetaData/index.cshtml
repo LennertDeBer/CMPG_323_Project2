@@ -1,60 +1,60 @@
 ﻿@model IEnumerable<CMPG_323_Project2.Models.MetaDatum>
 
-@{
-    ViewData["Title"] = "index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+    @{
+        ViewData["Title"] = "index";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 
-<h1>index</h1>
+    <h1>index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Geolocation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tags)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CapturedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CapturedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Photo)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Geolocation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tags)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CapturedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CapturedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Photo.PhotoId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MetadataId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MetadataId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MetadataId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Geolocation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Tags)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CapturedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CapturedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Photo)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Geolocation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tags)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CapturedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CapturedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Photo.PhotoId)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MetadataId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.MetadataId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MetadataId">Delete</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
