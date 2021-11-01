@@ -1,0 +1,43 @@
+﻿using CMPG_323_Project2.Data;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CMPG_323_Project2.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
+using CMPG_323_Project2.Models;
+using CMPG_323_Project2.ViewModel;
+
+namespace CMPG_323_Project2.Controllers
+{
+    public class ShareAlbumController : Controller
+    {
+        private readonly CMPG_DBContext _DBContext;
+        private readonly UserManager<AppUser> _UserManager;
+        public ShareAlbumController(CMPG_DBContext DBContext, UserManager<AppUser> UserManager)
+        {
+            _DBContext=DBContext;
+            _UserManager=UserManager;
+        }
+        public IActionResult Index()
+        {
+            //     var usid = _UserManager.GetUserId(HttpContext.User);
+            //List<AspNetUser> accountusers = _DBContext.AspNetUsers.ToList();
+            //List<UserPhoto> user_image_link = _DBContext.UserPhotos.ToList();
+            //List<Photo> images = _DBContext.Photos.ToList();
+            //var userViewModelImages = from uil in user_image_link
+            //                          from u in accountusers
+            //                          from i in images
+            //                          where u.Id == usid
+            //                          && (uil.UserId == u.Id
+            //                          || uil.RecepientUserId == u.Id)
+            ////                          where uil.PhotoId == i.PhotoId
+            ////                          select new UserViewModelPhoto { userVm = u, photoVm = i };
+            //    return View(userViewModelImages);
+            return View();
+
+      
+        }
+    }
+}
