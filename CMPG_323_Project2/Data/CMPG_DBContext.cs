@@ -96,6 +96,8 @@ namespace CMPG_323_Project2.Data
             {
                 entity.Property(e => e.ShareAlbumId).ValueGeneratedNever();
 
+                entity.Property(e => e.AccessGranted).HasDefaultValueSql("((0))");
+
                 entity.HasOne(d => d.Album)
                     .WithMany(p => p.ShareAlbums)
                     .HasForeignKey(d => d.AlbumId)
@@ -116,8 +118,6 @@ namespace CMPG_323_Project2.Data
             modelBuilder.Entity<UserPhoto>(entity =>
             {
                 entity.Property(e => e.ShareId).ValueGeneratedNever();
-
-                entity.Property(e => e.AccessGranted).IsFixedLength(true);
 
                 entity.HasOne(d => d.Photo)
                     .WithMany(p => p.UserPhotos)

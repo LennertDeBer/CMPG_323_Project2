@@ -28,7 +28,10 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.AlbumId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.AlbumId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AlbumId">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.AlbumId">Delete</a> |
+                <a asp-controller="Contain" asp-action="index" asp-route-id="@item.AlbumId">Open</a>
+
+
             </td>
         </tr>
 }

@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 namespace CMPG_323_Project2.Models
 {
     [Table("Contain")]
+    [Index(nameof(AlbumId), Name = "IX_Contain_Album_ID")]
+    [Index(nameof(PhotoId), Name = "IX_Contain_Photo_ID")]
     public partial class Contain
     {
         [Key]

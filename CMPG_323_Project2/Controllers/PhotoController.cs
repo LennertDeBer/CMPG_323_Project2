@@ -30,8 +30,9 @@ namespace CMPG_323_Project2.Controllers
         [HttpGet]
         public IActionResult Create(int Id)
         {
-            Photo accountuser = new Photo();
-            return View(accountuser);
+            Photo photo = new Photo();
+            return View(photo);
+        
         }
         [HttpPost]
         public IActionResult Create(Photo photo)

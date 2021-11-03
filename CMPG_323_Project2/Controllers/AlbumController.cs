@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CMPG_323_Project2.Controllers
 {
-  
+
 
 
     public class AlbumController : Controller
@@ -18,7 +18,7 @@ namespace CMPG_323_Project2.Controllers
         public AlbumController(CMPG_DBContext DBContext)
         {
             _DBContext=DBContext;
-    }
+        }
         public IActionResult Index()
         {
             List<Album> albums=_DBContext.Albums.ToList();
@@ -41,7 +41,7 @@ namespace CMPG_323_Project2.Controllers
         public IActionResult Edit(Album album)
         {
             _DBContext.Attach(album);
-            _DBContext.Entry(album).State = EntityState.Modified;
+            _DBContext.Entry(album).State=EntityState.Modified;
             _DBContext.SaveChanges();
 
             return RedirectToAction("index");
@@ -50,7 +50,7 @@ namespace CMPG_323_Project2.Controllers
         [HttpGet]
         public IActionResult Create(int Id)
         {
-            Album album =new Album();
+            Album album=new Album();
             return View(album);
         }
         [HttpPost]
@@ -69,7 +69,7 @@ namespace CMPG_323_Project2.Controllers
 
             int auNo;
             int.TryParse(auid.ToString(), out auNo);
-            if (auNo>0)
+            if (auNo > 0)
             {
                 auNo++;
                 auid=auNo;
