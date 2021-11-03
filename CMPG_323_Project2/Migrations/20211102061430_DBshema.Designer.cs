@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CMPG_323_Project2.Migrations
 {
     [DbContext(typeof(CMPG_DBContext))]
-    [Migration("20211101062957_DBshema")]
+    [Migration("20211102061430_DBshema")]
     partial class DBshema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -164,9 +164,9 @@ namespace CMPG_323_Project2.Migrations
 
                     b.HasKey("ContainId");
 
-                    b.HasIndex("AlbumId");
+                    b.HasIndex(new[] { "AlbumId" }, "IX_Contain_Album_ID");
 
-                    b.HasIndex("PhotoId");
+                    b.HasIndex(new[] { "PhotoId" }, "IX_Contain_Photo_ID");
 
                     b.ToTable("Contain");
                 });
@@ -228,27 +228,31 @@ namespace CMPG_323_Project2.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Share_Album_ID");
 
+                    b.Property<bool?>("AccessGranted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasColumnName("Access_Granted")
+                        .HasDefaultValueSql("((0))");
+
                     b.Property<int?>("AlbumId")
                         .HasColumnType("int")
                         .HasColumnName("Album_ID");
 
                     b.Property<string>("RecipientUserId")
-                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("Recipient_User_ID");
 
                     b.Property<string>("UserId")
-                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("User_ID");
 
                     b.HasKey("ShareAlbumId");
 
-                    b.HasIndex("AlbumId");
+                    b.HasIndex(new[] { "AlbumId" }, "IX_Share_Album_Album_ID");
 
-                    b.HasIndex("RecipientUserId");
+                    b.HasIndex(new[] { "RecipientUserId" }, "IX_Share_Album_Recipient_User_ID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex(new[] { "UserId" }, "IX_Share_Album_User_ID");
 
                     b.ToTable("Share_Album");
                 });
@@ -258,12 +262,6 @@ namespace CMPG_323_Project2.Migrations
                     b.Property<int>("ShareId")
                         .HasColumnType("int")
                         .HasColumnName("Share_ID");
-
-                    b.Property<byte[]>("AccessGranted")
-                        .HasMaxLength(1)
-                        .HasColumnType("binary(1)")
-                        .HasColumnName("Access_Granted")
-                        .IsFixedLength(true);
 
                     b.Property<int?>("PhotoId")
                         .HasColumnType("int")

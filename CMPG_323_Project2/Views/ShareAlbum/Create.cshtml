@@ -1,34 +1,30 @@
-﻿@model CMPG_323_Project2.Models.Photo
-
-
+﻿@model CMPG_323_Project2.ViewModel.UserViewModelAlbum
 
 @{
-
     ViewData["Title"] = "Create";
-
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<partial name="~/Views/MetaData/create.cshtml" />*@
 <h1>Create</h1>
 
-<h4>Photo</h4>
+<h4>Album</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="PhotoId" />
+            <input type="hidden" asp-for="albumVm.AlbumId" />
             @*<div class="form-group">
-                    <label asp-for="PhotoId" class="control-label"></label>
-                    <input asp-for="PhotoId" class="form-control" />
-                    <span asp-validation-for="PhotoId" class="text-danger"></span>
+                    <label asp-for="AlbumId" class="control-label"></label>
+                    <input asp-for="AlbumId" class="form-control" />
+                    <span asp-validation-for="AlbumId" class="text-danger"></span>
                 </div>*@
             <div class="form-group">
-                <label asp-for="PhotoUrl" class="control-label"></label>
-                <input asp-for="PhotoUrl" class="form-control" />
-                <span asp-validation-for="PhotoUrl" class="text-danger"></span>
+                <label asp-for="albumVm.AlbumName" class="control-label"></label>
+                <input asp-for="albumVm.AlbumName" class="form-control" />
+                <span asp-validation-for="albumVm.AlbumName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -40,9 +36,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-
 @section Scripts {
-   
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-   
 }

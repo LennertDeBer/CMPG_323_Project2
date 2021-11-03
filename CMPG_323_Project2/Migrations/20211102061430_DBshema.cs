@@ -102,9 +102,10 @@ namespace CMPG_323_Project2.Migrations
                 columns: table => new
                 {
                     Share_Album_ID = table.Column<int>(type: "int", nullable: false),
-                    User_ID = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
+                    User_ID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Album_ID = table.Column<int>(type: "int", nullable: true),
-                    Recipient_User_ID = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true)
+                    Recipient_User_ID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Access_Granted = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "((0))")
                 },
                 constraints: table =>
                 {
@@ -183,8 +184,7 @@ namespace CMPG_323_Project2.Migrations
                     Share_ID = table.Column<int>(type: "int", nullable: false),
                     User_ID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Photo_ID = table.Column<int>(type: "int", nullable: true),
-                    Recepient_User_ID = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Access_Granted = table.Column<byte[]>(type: "binary(1)", fixedLength: true, maxLength: 1, nullable: true)
+                    Recepient_User_ID = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {

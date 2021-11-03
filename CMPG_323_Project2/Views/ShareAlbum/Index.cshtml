@@ -1,5 +1,35 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<CMPG_323_Project2.ViewModel.UserViewModelAlbum>
+
+<style>
+    .avatar {
+        vertical-align: middle;
+        width: 410px;
+        height: 175px;
+    }
+</style>
+<p>
+    <a asp-action="Create">Create album</a>
+</p>
+<table class="table table-striped">
+    <tr>
+        <td>User name</td>
+        <td>Photo's</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.userVm.UserName</td>
+           
+            <td>@item.albumVm.AlbumName</td>
+            
+            <td>
+                <a asp-controller="ShareAlbum" asp-action="Edit" asp-route-id="@item.albumVm.AlbumId">Edit</a> |
+                <a asp-controller="ShareAlbum" asp-action="Details" asp-route-id="@item.albumVm.AlbumId">Details</a> |
+                <a asp-controller="ShareAlbum" asp-action="Delete" asp-route-id="@item.albumVm.AlbumId">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
+
 @{
 }

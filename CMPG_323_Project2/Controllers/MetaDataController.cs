@@ -65,7 +65,7 @@ namespace CMPG_323_Project2.Controllers
                 auid = 1;
             }
 
-           
+
             int auNo;
             int.TryParse(auid.ToString(), out auNo);
             if (auNo > 0)
