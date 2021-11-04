@@ -84,7 +84,7 @@ namespace CMPG_323_Project2.Controllers
 
         public IActionResult Details(int Id)
         {
-            MetaDatum metaDatum = _DBContext.MetaData.Where(p => p.PhotoId == Id).FirstOrDefault();
+            Photo metaDatum = _DBContext.Photos.Where(p => p.PhotoId == Id).FirstOrDefault();
             return View(metaDatum);
 
         }

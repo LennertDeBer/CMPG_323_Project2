@@ -21,24 +21,48 @@ namespace CMPG_323_Project2.Controllers
         }
         public IActionResult Index()
         {
+
             List<MetaDatum> metadatas = _DBContext.MetaData.ToList();
             return View(metadatas);
         }
         public IActionResult Details(int Id)
         {
-            MetaDatum metaDatum = _DBContext.MetaData.Where(p => p.MetadataId == Id).FirstOrDefault();
+            MetaDatum metaDatum = _DBContext.MetaData.Where(p => p.PhotoId == Id).FirstOrDefault();
             return View(metaDatum);
         }
 
         [HttpGet]
         public IActionResult Edit(int Id)
         {
-            MetaDatum metaDatum = _DBContext.MetaData.Where(p => p.MetadataId == Id).FirstOrDefault();
+            
+            MetaDatum metaDatum = _DBContext.MetaData.Where(p => p.PhotoId == Id).FirstOrDefault();
+
             return View(metaDatum);
         }
+
+        //[HttpGet]
+        //public IActionResult Search()
+        //{
+        //    return View();
+        //}
+
         [HttpPost]
+        public IActionResult Search(string colNeed,string searchNeed)
+        {
+            List<MetaDatum> metadatas = _DBContext.MetaData.FromSqlRaw("SELECT *  FROM MetaData WHERE " + colNeed + " = '" + searchNeed + "'").ToList();
+            
+            
+            //List<MetaDatum> returnMeta = (List<MetaDatum>)(from m in metadatas
+            //                             where colNeed == searchNeed
+            //                             select new MetaDatum { MetadataId=m.MetadataId,Tags=m.Tags,CapturedBy=m.CapturedBy, CapturedDate =m.CapturedDate
+            //                             , Geolocation = m.Geolocation, PhotoId =m.PhotoId});
+            return View(metadatas);
+
+        }
+
         public IActionResult Edit(MetaDatum metaDatum)
         {
+            int v = metaDatum.MetadataId;
             _DBContext.Attach(metaDatum);
             _DBContext.Entry(metaDatum).State = EntityState.Modified;
             _DBContext.SaveChanges();
