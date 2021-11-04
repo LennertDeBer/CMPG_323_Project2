@@ -10,16 +10,7 @@
     <p>
         <a asp-action="Create">Create New</a>
     </p>
-<form action="/MetaData/Search/?searchNeed&?" method="post">
-    <select name="colNeed" id="Column">
-        <option value="Geolocation">Geolocation</option>
-        <option value="Tags">Tags</option>
-        <option value="Captured_Date">Captured Date</option>
-        <option value="Captured_By">Captured By</option>
-    </select>
-    <input type="text" name="searchNeed" />
-    <input type="submit"  value="Search"/>
-</form>
+
     <table class="table">
         <thead>
             <tr>
@@ -63,7 +54,7 @@
                     <a asp-action="Edit" asp-route-id="@item.MetadataId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.MetadataId">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.MetadataId">Delete</a> |
-                    @*<a asp-action="Search" asp-route-id="@item.MetadataId">Search</a>*@ 
+                    
 
                 </td>
             </tr>

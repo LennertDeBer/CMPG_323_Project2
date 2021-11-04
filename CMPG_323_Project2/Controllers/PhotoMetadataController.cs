@@ -34,6 +34,7 @@ namespace CMPG_323_Project2.Controllers
             return View(photoViewModelMetaData);
 
         }
+
         [HttpPost]
         public IActionResult Create(PhotoViewModelMetaData photoViewModelMeta)
         {
@@ -122,6 +123,25 @@ namespace CMPG_323_Project2.Controllers
 
 
             return RedirectToAction("index");
+        }
+        private int photoToMeta(int Id)
+        {
+            MetaDatum md = _DBContext.MetaData.Where(p => p.PhotoId == Id).FirstOrDefault();
+            return md.MetadataId;
+        }
+
+        //[HttpGet("/PhotoMetaData/Details/{id}&{urlds}")]
+        /*, string urlds*/
+        public IActionResult Details(int Id)
+        {
+            int v = photoToMeta(Id);
+            PhotoViewModelMetaData pmVm = new PhotoViewModelMetaData();
+            MetaDatum metaDatum = _DBContext.MetaData.Where(p => p.MetadataId == v).FirstOrDefault();
+            Photo photo = _DBContext.Photos.Where(p => p.PhotoId == Id).FirstOrDefault();
+            pmVm.metadataVm = metaDatum;
+            pmVm.photoVm = photo;
+            return View(pmVm);
+          
         }
     }
 }

@@ -78,7 +78,6 @@ namespace CMPG_323_Project2.Controllers
                                       where uil.PhotoId == i.PhotoId
                                       select new UserViewModelPhoto { userVm = sender, photoVm = i };
             return View(userViewModelImages);
-
         }
     }
 }

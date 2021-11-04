@@ -26,8 +26,9 @@
                 @Html.DisplayFor(modelItem => item.PhotoUrl)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.PhotoId">Edit</a> |
-                <a asp-controller="MetaData" asp-action="Details" asp-route-id="@item.PhotoId">Details</a> |
+                <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@item.PhotoId">Edit</a> |
+                @*&@item.PhotoUrl*@
+                <a asp-controller="PhotoMetaData" asp-action="Details" asp-route-id="@item.PhotoId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.PhotoId">Delete</a>
             </td>
         </tr>
