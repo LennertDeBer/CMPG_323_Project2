@@ -87,6 +87,7 @@ namespace CMPG_323_Project2.Controllers
             }
 
             photoViewModelMeta.metadataVm.MetadataId = auid;
+
             photoViewModelMeta.metadataVm.PhotoId=photoViewModelMeta.photoVm.PhotoId;
             _DBContext.Attach(photoViewModelMeta.metadataVm);
             _DBContext.Entry(photoViewModelMeta.metadataVm).State = EntityState.Added;
@@ -122,7 +123,7 @@ namespace CMPG_323_Project2.Controllers
             _DBContext.SaveChanges();
 
 
-            return RedirectToAction("index");
+            return Redirect("/UserPhoto");
         }
         private int photoToMeta(int Id)
         {
