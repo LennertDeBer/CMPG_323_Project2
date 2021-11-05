@@ -79,7 +79,7 @@ namespace CMPG_323_Project2.Controllers
             _DBContext.Entry(photo).State = EntityState.Deleted;
             _DBContext.SaveChanges();
 
-            return RedirectToAction("index");
+            return Redirect("/UserPhoto");
         }
 
         public IActionResult Details(int Id)

@@ -1,0 +1,42 @@
+﻿@model CMPG_323_Project2.ViewModel.UserViewModelPhoto
+
+<style>
+    .avatar {
+        vertical-align: middle;
+        width: 410px;
+        height: 175px;
+    }
+</style>
+
+<div>
+    <h4>Photo</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.photoVm.PhotoUrl)
+        </dt>
+        <dd class="col-sm-10">
+            <img src=model.photoVm.PhotoUrl alt="model.photoVm.PhotoUrl" class="avatar" />
+        </dd>
+    </dl>
+</div>
+
+        
+
+
+<form action="/UserPhoto/ShareTo/?PId&?Email" method="post">
+    <input type="hidden" asp-for="photoVm.PhotoId" name="PId" />
+    <input type="text" name="Email" />
+    <input type="submit" value="Share" />
+    @if (ViewBag.Message == "userNF")
+    {
+        <label>User not found</label>
+    }
+    else
+    {
+        <label>@ViewBag.Message</label>
+    }
+</form>
+
+@{
+}

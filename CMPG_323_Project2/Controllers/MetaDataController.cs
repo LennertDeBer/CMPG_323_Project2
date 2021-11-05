@@ -50,7 +50,7 @@ namespace CMPG_323_Project2.Controllers
         public IActionResult Search(string colNeed,string searchNeed)
         {
             List<MetaDatum> metadatas = _DBContext.MetaData.FromSqlRaw("SELECT *  FROM MetaData WHERE " + colNeed + " = '" + searchNeed + "'").ToList();
-            
+            //ViewBag.Message = searchNeed;
             
             //List<MetaDatum> returnMeta = (List<MetaDatum>)(from m in metadatas
             //                             where colNeed == searchNeed

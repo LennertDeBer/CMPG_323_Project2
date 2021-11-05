@@ -25,7 +25,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
 
-                        @*               flow of application
+                                       @*flow of application*@
         @if (@Context.Request.GetEncodedUrl().ToString() == "https://localhost:44347/UserPhoto")
         {
             <li class="nav-item">
@@ -38,7 +38,7 @@
                 <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="SharedWith">Shared with me</a>
             </li>
         }
-        @if (@Context.Request.GetEncodedUrl().ToString() == "https://localhost:44347/UserPhoto/MyPhoto")
+        @*@if (@Context.Request.GetEncodedUrl().ToString() == "https://localhost:44347/UserPhoto/MyPhoto")
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -98,9 +98,9 @@
             <a class="nav-link text-dark" asp-area="" asp-controller="Album" asp-action="Index">album</a>
         </li>*@
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Photo" asp-action="Index">All Photo's</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="Index">All Photo's</a>
                         </li>
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ShareAlbum" asp-action="Index">share album</a>
                         </li>
                         <li class="nav-item">
@@ -108,7 +108,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="MetaData" asp-action="Index">MetaData</a>
-                        </li>
+                        </li>*@
                     </ul>
                     <partial name="_LoginPartial.cshtml" />
                 </div>

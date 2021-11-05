@@ -8,6 +8,7 @@ using CMPG_323_Project2.Models;
 using CMPG_323_Project2.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using CMPG_323_Project2.Areas.Identity.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CMPG_323_Project2.Controllers
 {
@@ -57,6 +58,69 @@ namespace CMPG_323_Project2.Controllers
             return View(userViewModelImages);
 
         }
+        [HttpGet]
+        public IActionResult ShareTo(int Id)
+        {
+            UserViewModelPhoto userViewModelPhoto = new UserViewModelPhoto();
+            Photo photo = _DBContext.Photos.Where(p => p.PhotoId == Id).FirstOrDefault();
+            AspNetUser aspUser = _DBContext.AspNetUsers.Where(p => p.Id == _UserManager.GetUserId(HttpContext.User)).FirstOrDefault();
+            userViewModelPhoto.photoVm = photo;
+            userViewModelPhoto.userVm = aspUser;
+            return View(userViewModelPhoto);
+        }
+        [HttpPost]
+        public IActionResult ShareTo(int PId,String Email)
+        {
+            AspNetUser aspUser = _DBContext.AspNetUsers.Where(p => p.Email == Email).FirstOrDefault();
+            if(aspUser==null)
+            {
+                ViewBag.Message = "userNF";
+
+                return View();
+
+            }
+            else {
+                UserPhoto userPhoto = new UserPhoto();
+               
+                
+                int auid = 0;
+                try
+                {
+                    auid = _DBContext.UserPhotos.Max(auId => auId.ShareId);
+                }
+                catch (Exception e)
+                {
+                    auid = 1;
+                }
+
+
+
+                int auNo;
+                int.TryParse(auid.ToString(), out auNo);
+                if (auNo > 0)
+                {
+                    auNo++;
+                    auid = auNo;
+                }
+                AspNetUser currentUser = _DBContext.AspNetUsers.Where(p => p.Id == _UserManager.GetUserId(HttpContext.User)).FirstOrDefault();
+                userPhoto.ShareId = auid;
+                userPhoto.RecepientUserId= aspUser.Id;
+
+
+                userPhoto.UserId = currentUser.Id;
+                userPhoto.PhotoId = PId;
+                _DBContext.Attach(userPhoto);
+                _DBContext.Entry(userPhoto).State = EntityState.Added;
+                _DBContext.SaveChanges();
+
+
+                return RedirectToAction("index");
+
+
+                
+            }
+        }
+
         public IActionResult SharedWith()
         {
 
@@ -79,5 +143,6 @@ namespace CMPG_323_Project2.Controllers
                                       select new UserViewModelPhoto { userVm = sender, photoVm = i };
             return View(userViewModelImages);
         }
+
     }
 }
