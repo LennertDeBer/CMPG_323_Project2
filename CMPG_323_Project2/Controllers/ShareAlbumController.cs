@@ -25,31 +25,49 @@ namespace CMPG_323_Project2.Controllers
         {
             var usid = _UserManager.GetUserId(HttpContext.User);
             List<AspNetUser> accountusers = _DBContext.AspNetUsers.ToList();
-            List<ShareAlbum> albumuser = _DBContext.ShareAlbums.ToList();
+
+            List<ShareAlbum> albumuser = _DBContext.ShareAlbums.FromSqlRaw("select * from( select *, row_number() over(partition by User_ID,Recipient_User_ID, Album_ID order by Share_Album_ID) as row_number from[dbo].[Share_Album] ) as rows where row_number = 1").ToList();
+            //List<ShareAlbum> albumuser = _DBContext.ShareAlbums.ToList();
             List<Album> albums = _DBContext.Albums.ToList();
             var userViewModelImages = from au in albumuser
                                       from u in accountusers
                                       from a in albums
                                       where u.Id == usid
-                                      && (au.UserId == u.Id
-                                      || au.RecipientUserId == u.Id)
+                                      &&(au.UserId == u.Id
+                                     && au.RecipientUserId == u.Id)
+                                     ^ (au.UserId != usid
+                                     && au.RecipientUserId == usid)
+                                      
                                       where a.AlbumId == au.AlbumId
-                                      select new UserViewModelAlbum { userVm = u, albumVm = a };
+                                 
+             
+                                    select new UserViewModelAlbum { userVm = u, albumVm = a }
+                                    ;
+            //ViewBag.Awaiting = _DBContext.ShareAlbums.Where(p => p.AccessGranted == false && p.RecipientUserId == usid).Count();
             return View(userViewModelImages);
         }
         public IActionResult MyAlbum()
         {
             var usid = _UserManager.GetUserId(HttpContext.User);
             List<AspNetUser> accountusers = _DBContext.AspNetUsers.ToList();
-            List<UserPhoto> user_image_link = _DBContext.UserPhotos.ToList();
-            List<Photo> images = _DBContext.Photos.ToList();
-            var userViewModelImages = from uil in user_image_link
+
+            List<ShareAlbum> albumuser = _DBContext.ShareAlbums.FromSqlRaw("select * from( select *, row_number() over(partition by User_ID,Recipient_User_ID, Album_ID order by Share_Album_ID) as row_number from[dbo].[Share_Album] ) as rows where row_number = 1").ToList();
+            //List<ShareAlbum> albumuser = _DBContext.ShareAlbums.ToList();
+            List<Album> albums = _DBContext.Albums.ToList();
+            var userViewModelImages = from au in albumuser
                                       from u in accountusers
-                                      from i in images
+                                      from a in albums
                                       where u.Id == usid
-                                      && (uil.UserId == u.Id)
-                                      where uil.PhotoId == i.PhotoId
-                                      select new UserViewModelPhoto { userVm = u, photoVm = i };
+                                      && (au.UserId == u.Id
+                                     && au.RecipientUserId == u.Id)
+                                     
+
+                                      where a.AlbumId == au.AlbumId
+
+
+                                      select new UserViewModelAlbum { userVm = u, albumVm = a }
+                                    ;
+            //ViewBag.Awaiting = _DBContext.ShareAlbums.Where(p => p.AccessGranted == false && p.RecipientUserId == usid).Count();
             return View(userViewModelImages);
 
         }
@@ -57,20 +75,23 @@ namespace CMPG_323_Project2.Controllers
         {
             var usid = _UserManager.GetUserId(HttpContext.User);
             List<AspNetUser> accountusers = _DBContext.AspNetUsers.ToList();
-            List<UserPhoto> user_image_link = _DBContext.UserPhotos.ToList();
-            List<Photo> images = _DBContext.Photos.ToList();
-            var userViewModelImages = from uil in user_image_link
+
+            List<ShareAlbum> albumuser = _DBContext.ShareAlbums.FromSqlRaw("select * from( select *, row_number() over(partition by User_ID,Recipient_User_ID, Album_ID order by Share_Album_ID) as row_number from[dbo].[Share_Album] ) as rows where row_number = 1").ToList();
+            //List<ShareAlbum> albumuser = _DBContext.ShareAlbums.ToList();
+            List<Album> albums = _DBContext.Albums.ToList();
+            var userViewModelImages = from au in albumuser
                                       from u in accountusers
-                                      from sender in accountusers
-                                      from i in images
-                                      where sender.Id == uil.UserId
-                                      && uil.RecepientUserId == usid
-                                      && uil.RecepientUserId != uil.UserId
+                                      from a in albums
                                       where u.Id == usid
-                                      && (uil.RecepientUserId == u.Id
-                                      && uil.RecepientUserId != uil.UserId)
-                                      where uil.PhotoId == i.PhotoId
-                                      select new UserViewModelPhoto { userVm = sender, photoVm = i };
+                                      && (au.UserId != usid
+                                     && au.RecipientUserId == usid)
+
+                                      where a.AlbumId == au.AlbumId
+
+
+                                      select new UserViewModelAlbum { userVm = u, albumVm = a }
+                                    ;
+            //ViewBag.Awaiting = _DBContext.ShareAlbums.Where(p => p.AccessGranted == false && p.RecipientUserId == usid).Count();
             return View(userViewModelImages);
         }
 
@@ -142,6 +163,74 @@ namespace CMPG_323_Project2.Controllers
 
 
             return RedirectToAction("index");
+        }
+
+
+
+        [HttpGet]
+        public IActionResult ShareToUser(int Id)
+        {
+            UserViewModelAlbum userViewModelAlbum = new UserViewModelAlbum();
+            Album album = _DBContext.Albums.Where(p => p.AlbumId == Id).FirstOrDefault();
+            AspNetUser aspUser = _DBContext.AspNetUsers.Where(p => p.Id == _UserManager.GetUserId(HttpContext.User)).FirstOrDefault();
+            userViewModelAlbum.albumVm = album;
+            userViewModelAlbum.userVm = aspUser;
+            return View(userViewModelAlbum);
+        }
+        [HttpPost]
+        public IActionResult ShareToUser(int AId, String Email)
+        {
+            AspNetUser aspUser = _DBContext.AspNetUsers.Where(p => p.Email == Email).FirstOrDefault();
+            if (aspUser == null)
+            {
+                ViewBag.Message = "userNF";
+
+                return View();
+
+            }
+            else
+            {
+                ShareAlbum shareAlbum = new ShareAlbum();
+
+
+                int auid = 0;
+                try
+                {
+                    auid = _DBContext.ShareAlbums.Max(auId => auId.ShareAlbumId);
+                }
+                catch (Exception e)
+                {
+                    auid = 1;
+                }
+
+
+
+                int auNo;
+                int.TryParse(auid.ToString(), out auNo);
+                if (auNo > 0)
+                {
+                    auNo++;
+                    auid = auNo;
+                }
+                AspNetUser currentUser = _DBContext.AspNetUsers.Where(p => p.Id == _UserManager.GetUserId(HttpContext.User)).FirstOrDefault();
+                shareAlbum.ShareAlbumId = auid;
+                shareAlbum.RecipientUserId = aspUser.Id;
+
+
+                shareAlbum.UserId = currentUser.Id;
+                shareAlbum.AlbumId = AId;
+                shareAlbum.AccessGranted = true;
+        
+                _DBContext.Attach(shareAlbum);
+                _DBContext.Entry(shareAlbum).State = EntityState.Added;
+                _DBContext.SaveChanges();
+
+
+                return RedirectToAction("index");
+
+
+
+            }
         }
     }
 

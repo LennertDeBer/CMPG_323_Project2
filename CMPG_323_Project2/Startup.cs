@@ -28,11 +28,14 @@ namespace CMPG_323_Project2
             services.AddControllersWithViews();
             services.AddDbContext<CMPG_DBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AutContextConnection")));
             services.AddRazorPages();
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseRouting();
+      
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

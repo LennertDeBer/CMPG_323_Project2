@@ -1,0 +1,42 @@
+﻿@model CMPG_323_Project2.ViewModel.AlbumViewModelPhoto
+
+<style>
+    .avatar {
+        vertical-align: middle;
+        width: 410px;
+        height: 175px;
+    }
+</style>
+<p>
+    
+
+</p>
+<table class="table table-striped">
+    <tr>
+        <td>User name</td>
+        <td>Photo's</td>
+    </tr>
+
+        <tr>
+           
+            <td>
+              
+                    @Html.DisplayFor(modelItem => modelItem.photoVm.PhotoUrl)
+                    
+                    <img src="@Model.photoVm.PhotoUrl" alt="@Model.photoVm.PhotoUrl" class="avatar" />
+         
+            </td>
+            <td>
+                <form action="/Contain/AddPhoto/?IdA&?IdP&?Flag" method="post">
+                    <input type="hidden" asp-for="@Model.photoVm.PhotoId" name="IdP" />
+                    <input type="hidden" asp-for="@Model.albumVm.AlbumId" name="IdA" />
+                    <input type="hidden" value="true" name="Flag" />
+                    <input type="submit" value="Confirm" />
+                </form>
+            </td>
+        </tr>
+    
+</table>
+
+@{
+}

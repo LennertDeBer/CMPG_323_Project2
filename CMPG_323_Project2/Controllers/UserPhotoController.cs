@@ -143,6 +143,7 @@ namespace CMPG_323_Project2.Controllers
                                       select new UserViewModelPhoto { userVm = sender, photoVm = i };
             return View(userViewModelImages);
         }
+        
 
     }
 }

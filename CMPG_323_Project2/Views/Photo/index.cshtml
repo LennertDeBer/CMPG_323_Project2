@@ -28,8 +28,10 @@
             <td>
                 <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@item.PhotoId">Edit</a> |
                 @*&@item.PhotoUrl*@
+
                 <a asp-controller="PhotoMetaData" asp-action="Details" asp-route-id="@item.PhotoId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PhotoId">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.PhotoId">Delete</a>|
+               
             </td>
         </tr>
 }

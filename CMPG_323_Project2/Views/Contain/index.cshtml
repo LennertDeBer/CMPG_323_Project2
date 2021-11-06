@@ -1,4 +1,9 @@
 ﻿@model IEnumerable<CMPG_323_Project2.ViewModel.AlbumViewModelPhoto>
+ 
+@{
+    ViewData["Title"] = "index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <style>
     .avatar {
@@ -8,24 +13,67 @@
     }
 </style>
 <p>
-    <a asp-controller="Photo" asp-action="Create">UploadImage</a>
+    @if (Model.Count() > 1 && ViewBag.AlbumId != null)
+    {
+        @foreach (var item in Model)
+        {
+
+
+            <form action="/Contain/SelectPhoto?AlbumId" method="get">
+
+
+            <input type="hidden" asp-for="@item.albumVm.AlbumId" name="AlbumId" />
+            @*<input type="hidden" asp-for="@item.photoVm.PhotoId" name="IdP" />*@
+            <input type="submit" value="AddPhoto" />
+            </form>
+            break;
+        }
+
+    }
+    else
+    {
+
+
+
+        @Html.ActionLink("Select Photo", "SelectPhoto", new { ViewBag.AlbumId }, null)
+
+        @*@Html.RouteLink("NewText","/Contain/SelectPhoto", new { ViewBag.AlbumId })*@
+
+     
+
+    }
+    @* @{var username = Context.User.Identity.Name;
+            var val = @Context.Request.RouteValues.Values.LastOrDefault();
+
+        }*@
+
 </p>
 <table class="table table-striped">
     <tr>
-        <td>User name</td>
-        <td>Photo's</td>
+        <d>
+            <td>CID</td>
+            <td>album name</td>
+            <td>Photo's</td>
     </tr>
     @foreach (var item in Model)
     {
         <tr>
+            <td>@item.containVm.ContainId</td>
+
             <td>@item.albumVm.AlbumName</td>
             <td>
                 <img src="@item.photoVm.PhotoUrl" alt="@item.photoVm.PhotoUrl" class="avatar" />
             </td>
             <td>
-                <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@item.photoVm.PhotoId">Edit</a> |
-                <a asp-controller="MetaData" asp-action="Details" asp-route-id="@item.photoVm.PhotoId">Details</a> |
-                <a asp-controller="Photo" asp-action="Delete" asp-route-id="@item.photoVm.PhotoId">Delete</a>
+
+               
+                <form action="/Contain/RemovePhoto/?IdA&?IdP&?IdC" method="get">
+                    <input type="hidden" asp-for="@item.containVm.ContainId" name="IdC" />
+                    <input type="hidden" asp-for="@item.albumVm.AlbumId" name="IdA" />
+                    <input type="hidden" asp-for="@item.containVm.ContainId" name="IdP" />
+                    <input type="submit" value="RemovePhoto" />
+                </form>
+
             </td>
         </tr>
     }

@@ -1,0 +1,46 @@
+﻿@model  IEnumerable<CMPG_323_Project2.ViewModel.AlbumViewModelPhoto>
+
+    <style>
+        .avatar {
+            vertical-align: middle;
+            width: 410px;
+            height: 175px;
+        }
+    </style>
+    <a>
+        @if(Model.Count() < 1)
+        {
+            <a asp-controller="PhotoMetaData" asp-action="Create">Add Photo</a>
+        }
+
+    </p>
+    <table class="table table-striped">
+        <tr>
+            <td>Photo's</td>
+        </tr>
+        @foreach(var item in Model)
+
+        {
+            <tr>
+
+            <td>
+                <img src="@item.photoVm.PhotoUrl" alt="@item.photoVm.PhotoUrl" class="avatar" />
+            </td>
+            <td>
+               
+                <form action="/Contain/AddPhoto/?IdA&?IdP" method="post">
+                    <input type="hidden" asp-for="@item.photoVm.PhotoId" name="IdP" />
+                    <input type="hidden" asp-for="@item.albumVm.AlbumId" name="IdA" />
+                    <input type="submit" value="AddPhoto" />
+                </form>
+            </td>
+        </tr>
+        }
+    </table>
+
+    @{
+    }@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+    *@
+    @{
+    }

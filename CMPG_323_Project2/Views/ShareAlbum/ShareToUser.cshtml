@@ -1,0 +1,38 @@
+﻿@model CMPG_323_Project2.ViewModel.UserViewModelAlbum
+
+
+
+<div>
+    <h4>Photo</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.albumVm.AlbumName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.albumVm.AlbumName)
+        </dd>
+    </dl>
+</div>
+
+
+
+
+<form action="/ShareAlbum/ShareToUser/?AId&?Email" method="post">
+    <input type="hidden" asp-for="albumVm.AlbumId" name="AId" />
+    <input type="text" name="Email" />
+    <input type="submit" value="Share" />
+    @if (ViewBag.Message == "userNF")
+    {
+        <label>User not found</label>
+    }
+    else
+    {
+        <label>@ViewBag.Message</label>
+    }
+</form>
+
+@{
+}
+@{
+}
