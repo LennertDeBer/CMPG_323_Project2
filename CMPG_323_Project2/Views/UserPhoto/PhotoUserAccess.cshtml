@@ -1,0 +1,48 @@
+﻿@model IEnumerable<CMPG_323_Project2.ViewModel.UserViewModelPhoto>
+
+<style>
+    .avatar {
+        vertical-align: middle;
+        width: 410px;
+        height: 175px;
+    }
+</style>
+<form action="/MetaData/Search/?searchNeed&?colNeed" method="post">
+    <select name="colNeed" id="Column">
+        <option value="Geolocation">Geolocation</option>
+        <option value="Tags">Tags</option>
+        <option value="Captured_Date">Captured Date</option>
+        <option value="Captured_By">Captured By</option>
+    </select>
+    <input type="text" name="searchNeed" />
+    <input type="submit" value="Search" />
+</form>
+<p>
+    <a asp-controller="PhotoMetaData" asp-action="Create">UploadImage</a>
+</p>
+<table class="table table-striped">
+    <tr>
+        <td>User name</td>
+        <td>Photo's</td>
+        <td>Shared To</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>@item.userVm.UserName</td>
+    <td>
+        <img src="@item.photoVm.PhotoUrl" alt="@item.photoVm.PhotoUrl" class="avatar" />
+    </td>
+    <td>@item.userPhotoVm.RecepientUser.Email</td>
+    <td>
+        <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@item.photoVm.PhotoId">Edit</a> |
+
+        <a asp-controller="PhotoMetaData" asp-action="Details" asp-route-id="@item.photoVm.PhotoId">Details</a> |
+        <a asp-controller="UserPhoto" asp-action="Delete" asp-route-Id="@item.userPhotoVm.ShareId">Delete</a>
+    </td>
+</tr>
+    }
+</table>
+
+@{
+}

@@ -106,7 +106,7 @@ namespace CMPG_323_Project2.Controllers
                 int auid = 0;
                 try
                 {
-                    auid = _link.GetAll().Max(auId => auId.ShareId);
+                    auid=_link.GetAll().Max(auId => auId.ShareId);
                 }
                 catch (Exception e)
                 {
@@ -122,7 +122,7 @@ namespace CMPG_323_Project2.Controllers
                     auNo++;
                     auid = auNo;
                 }
-                AspNetUser currentUser = _user.GetById(_UserManager.GetUserId(HttpContext.User));
+                AspNetUser currentUser=_user.GetById(_UserManager.GetUserId(HttpContext.User));
                 userPhoto.ShareId = auid;
 
                 userPhoto.RecepientUserId = aspUser.Id;
@@ -142,13 +142,13 @@ namespace CMPG_323_Project2.Controllers
         }
 
         public IActionResult SharedWith()
-        {
+        {//I recieved form other people
 
 
             var usid = _UserManager.GetUserId(HttpContext.User);
-            List<AspNetUser> accountusers = _user.GetAll();
-            List<UserPhoto> user_image_link = _link.GetAll();
-            List<Photo> images = _photo.GetAll();
+            List<AspNetUser> accountusers=_user.GetAll();
+            List<UserPhoto> user_image_link=_link.GetAll();
+            List<Photo> images=_photo.GetAll();
             var userViewModelImages = from uil in user_image_link
                                       from u in accountusers
                                       from sender in accountusers
@@ -163,6 +163,51 @@ namespace CMPG_323_Project2.Controllers
                                       select new UserViewModelPhoto { userVm = sender, photoVm = i };
             return View(userViewModelImages);
         }
+            public IActionResult PhotoUserAccess()
+            {//I shared to other people
+
+
+                var usid=_UserManager.GetUserId(HttpContext.User);
+                List<AspNetUser> accountusers=_user.GetAll();
+                List<UserPhoto> user_image_link=_link.GetAll();
+                List<Photo> images=_photo.GetAll();
+                var userViewModelImages = from uil in user_image_link
+                                          from u in accountusers
+                                          from sender in accountusers
+                                          from i in images
+                                          where sender.Id == uil.UserId
+                                          && uil.UserId == usid
+                                          && uil.RecepientUserId != uil.UserId
+                                          where u.Id == usid
+                                          where uil.PhotoId == i.PhotoId
+                                          select new UserViewModelPhoto { userVm = sender, userPhotoVm =uil, photoVm = i };
+                return View(userViewModelImages);
+            }
+        //[HttpGet("/UserPhoto/Delete/{user_sender}&{user_recieve}&{PId}")]
+        [HttpGet]
+        public IActionResult Delete(int Id)
+        {
+            UserViewModelPhoto reuren = new UserViewModelPhoto();
+               UserPhoto Likd=_link.GetById(Id);
+            AspNetUser sender=_user.GetById(Likd.UserId);
+            AspNetUser reciever=_user.GetById(Likd.RecepientUserId);
+            Photo Ph=_photo.GetById(Likd.PhotoId);
+            Likd.User=sender;
+            Likd.RecepientUser=reciever;
+            reuren.photoVm=Ph;
+            reuren.userPhotoVm=Likd;
+           
+            return View(reuren);
+        }
+        [HttpPost]
+        public IActionResult Delete(UserViewModelPhoto album)
+        {
+            _link.Delete(album.userPhotoVm.ShareId);
+            return RedirectToAction("index");
+        }
+       
+        
+        
 
 
     }

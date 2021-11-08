@@ -12,6 +12,7 @@
     <tr>
         <td>Shared By</td>
         <td>Photo's</td>
+      
     </tr>
     @foreach (var item in Model)
     {
@@ -20,6 +21,7 @@
             <td>
                 <img src="@item.photoVm.PhotoUrl" alt="@item.photoVm.PhotoUrl" class="avatar" />
             </td>
+            
         </tr>
     }
 </table>

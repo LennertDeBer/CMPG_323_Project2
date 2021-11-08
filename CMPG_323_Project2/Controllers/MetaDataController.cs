@@ -1,5 +1,6 @@
 ﻿using CMPG_323_Project2.Data;
 using CMPG_323_Project2.Models;
+using CMPG_323_Project2.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,21 +14,21 @@ namespace CMPG_323_Project2.Controllers
     public class MetaDataController : Controller
     {
 
-        private readonly CMPG_DBContext _DBContext;
+        private readonly IGenericRepository<MetaDatum> _meta;
 
-        public MetaDataController(CMPG_DBContext DBContext)
+        public MetaDataController(IGenericRepository<MetaDatum> meta, CMPG_DBContext DBContext)
         {
-            _DBContext = DBContext;
+            _meta = meta;
         }
         public IActionResult Index()
         {
 
-            List<MetaDatum> metadatas = _DBContext.MetaData.ToList();
+            List<MetaDatum> metadatas=_meta.GetAll();
             return View(metadatas);
         }
         public IActionResult Details(int Id)
         {
-            MetaDatum metaDatum = _DBContext.MetaData.Where(p => p.PhotoId == Id).FirstOrDefault();
+            MetaDatum metaDatum=_meta.GetById(Id);
             return View(metaDatum);
         }
 
@@ -35,7 +36,7 @@ namespace CMPG_323_Project2.Controllers
         public IActionResult Edit(int Id)
         {
             
-            MetaDatum metaDatum = _DBContext.MetaData.Where(p => p.PhotoId == Id).FirstOrDefault();
+            MetaDatum metaDatum=_meta.GetById(Id);
 
             return View(metaDatum);
         }
@@ -49,7 +50,7 @@ namespace CMPG_323_Project2.Controllers
         [HttpPost]
         public IActionResult Search(string colNeed,string searchNeed)
         {
-            List<MetaDatum> metadatas = _DBContext.MetaData.FromSqlRaw("SELECT *  FROM MetaData WHERE " + colNeed + " = '" + searchNeed + "'").ToList();
+            List<MetaDatum> metadatas=_meta.Find("SELECT *  FROM MetaData WHERE " + colNeed + " = '" + searchNeed + "'");
             //ViewBag.Message = searchNeed;
             
             //List<MetaDatum> returnMeta = (List<MetaDatum>)(from m in metadatas
@@ -63,9 +64,10 @@ namespace CMPG_323_Project2.Controllers
         public IActionResult Edit(MetaDatum metaDatum)
         {
             int v = metaDatum.MetadataId;
-            _DBContext.Attach(metaDatum);
-            _DBContext.Entry(metaDatum).State = EntityState.Modified;
-            _DBContext.SaveChanges();
+            _meta.Update(metaDatum);
+            //_DBContext.Attach(metaDatum);
+            //_DBContext.Entry(metaDatum).State = EntityState.Modified;
+            //_DBContext.SaveChanges();
 
             return RedirectToAction("index");
         }
@@ -82,7 +84,7 @@ namespace CMPG_323_Project2.Controllers
             int auid = 0;
             try
             {
-                auid = _DBContext.MetaData.Max(auId => auId.MetadataId);
+                auid=_meta.GetAll().Max(auId => auId.MetadataId);
             }
             catch (Exception e)
             {
@@ -99,9 +101,10 @@ namespace CMPG_323_Project2.Controllers
             }
 
             metadata.MetadataId = auid;
-            _DBContext.Attach(metadata);
-            _DBContext.Entry(metadata).State = EntityState.Added;
-            _DBContext.SaveChanges();
+            _meta.Insert(metadata);
+            //_DBContext.Attach(metadata);
+            //_DBContext.Entry(metadata).State = EntityState.Added;
+            //_DBContext.SaveChanges();
 
 
             return RedirectToAction("index");
@@ -110,15 +113,16 @@ namespace CMPG_323_Project2.Controllers
         [HttpGet]
         public IActionResult Delete(int Id)
         {
-            MetaDatum accountuser = _DBContext.MetaData.Where(p => p.MetadataId == Id).FirstOrDefault();
+            MetaDatum accountuser=_meta.GetById(Id);
             return View(accountuser);
         }
         [HttpPost]
         public IActionResult Delete(MetaDatum metadata)
         {
-            _DBContext.Attach(metadata);
-            _DBContext.Entry(metadata).State = EntityState.Deleted;
-            _DBContext.SaveChanges();
+            _meta.Delete(metadata.MetadataId);
+            //_DBContext.Attach(metadata);
+            //_DBContext.Entry(metadata).State = EntityState.Deleted;
+            //_DBContext.SaveChanges();
 
             return RedirectToAction("index");
         }

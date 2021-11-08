@@ -31,13 +31,16 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
-                            
+
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="MyPhoto">My photo's</a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="SharedWith">Shared with me</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserPhoto" asp-action="PhotoUserAccess">Accesse Of shared Photos</a>
                             </li>
                         }
                         @*@if (@Context.Request.GetEncodedUrl().ToString() == "https://localhost:44347/UserPhoto/MyPhoto")
@@ -70,12 +73,12 @@
                         }
 
                         //testc CRUD
-                            @*<li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Photo" asp-action="Index">Photo1</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="MetaData" asp-action="Index">MetaData</a>
-            </li>*@
+                        @*<li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Photo" asp-action="Index">Photo1</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="MetaData" asp-action="Index">MetaData</a>
+        </li>*@
                         @*}*@
 
                         @*CRD photo

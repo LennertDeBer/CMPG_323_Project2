@@ -120,8 +120,8 @@ namespace CMPG_323_Project2.Controllers
 
             photoViewModelMeta.userphotVm.ShareId = auid;
             photoViewModelMeta.userphotVm.PhotoId = photoViewModelMeta.photoVm.PhotoId;
-            photoViewModelMeta.userphotVm.UserId = _UserManager.GetUserId(HttpContext.User); 
-            photoViewModelMeta.userphotVm.RecepientUserId = _UserManager.GetUserId(HttpContext.User);
+            photoViewModelMeta.userphotVm.UserId=_UserManager.GetUserId(HttpContext.User); 
+            photoViewModelMeta.userphotVm.RecepientUserId=_UserManager.GetUserId(HttpContext.User);
             _link.Insert(photoViewModelMeta.userphotVm);
 
 
@@ -141,8 +141,8 @@ namespace CMPG_323_Project2.Controllers
             PhotoViewModelMetaData pmVm = new PhotoViewModelMetaData();
             MetaDatum metaDatum=_metaData.GetById(v);
             Photo photo=_photo.GetById(Id);
-            pmVm.metadataVm = metaDatum;
-            pmVm.photoVm = photo;
+            pmVm.metadataVm=metaDatum;
+            pmVm.photoVm=photo;
             return View(pmVm);
           
         }

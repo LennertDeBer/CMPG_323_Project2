@@ -9,6 +9,7 @@ namespace CMPG_323_Project2.ViewModel
     public class UserViewModelPhoto
     {
         public Photo photoVm { get; set; }
+        public UserPhoto userPhotoVm { get; set; }
         public AspNetUser userVm { get; set; }
     }
 }
