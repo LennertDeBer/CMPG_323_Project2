@@ -1,4 +1,7 @@
 using CMPG_323_Project2.Data;
+using CMPG_323_Project2.Models;
+using CMPG_323_Project2.Repository;
+using CMPG_323_Project2.ViewModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +30,11 @@ namespace CMPG_323_Project2
         {
             services.AddControllersWithViews();
             services.AddDbContext<CMPG_DBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AutContextConnection")));
+            services.AddTransient<IGenericRepository<Photo>, GenericRepository<Photo>>();
+            services.AddTransient<IGenericRepository<AspNetUser>, GenericRepository<AspNetUser>>();
+            services.AddTransient<IGenericRepository<UserPhoto>, GenericRepository<UserPhoto>>();
+            services.AddTransient<IGenericRepository<MetaDatum>, GenericRepository<MetaDatum>>();
+            //services.AddTransient<IGenericRepository<UserViewModelPhoto>, GenericRepository<UserViewModelPhoto>>();
             services.AddRazorPages();
         
         }

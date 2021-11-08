@@ -1,6 +1,7 @@
 ﻿using CMPG_323_Project2.Areas.Identity.Data;
 using CMPG_323_Project2.Data;
 using CMPG_323_Project2.Models;
+using CMPG_323_Project2.Repository;
 using CMPG_323_Project2.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,16 @@ namespace CMPG_323_Project2.Controllers
 {
     public class PhotoMetadataController : Controller
     {
-        private readonly CMPG_DBContext _DBContext;
+        //private readonly CMPG_DBContext _DBContext;
+        private readonly IGenericRepository<Photo> _photo;
+        private readonly IGenericRepository<MetaDatum> _metaData;
+        private readonly IGenericRepository<UserPhoto> _link;
         private readonly UserManager<AppUser> _UserManager;
-        public PhotoMetadataController(CMPG_DBContext DBContext, UserManager<AppUser> UserManager)
+        public PhotoMetadataController(IGenericRepository<Photo> photo, IGenericRepository<MetaDatum> metaData, IGenericRepository<UserPhoto> link, UserManager<AppUser> UserManager)
         {
-            _DBContext = DBContext;
+            _photo=photo;
+            _metaData=metaData;
+            _link=link;
             _UserManager = UserManager;
         }
 
@@ -43,7 +49,7 @@ namespace CMPG_323_Project2.Controllers
             int auid = 0;
             try
             {
-                auid = _DBContext.Photos.Max(auId => auId.PhotoId);
+                auid=_photo.GetAll().Max(auId => auId.PhotoId);
             }
             catch (Exception e)
             {
@@ -61,16 +67,15 @@ namespace CMPG_323_Project2.Controllers
             }
 
             photoViewModelMeta.photoVm.PhotoId = auid;
-            _DBContext.Attach(photoViewModelMeta.photoVm);
-            _DBContext.Entry(photoViewModelMeta.photoVm).State = EntityState.Added;
-            _DBContext.SaveChanges();
+           _photo.Insert(photoViewModelMeta.photoVm);
+           
 
 
             
              auid = 0;
             try
             {
-                auid = _DBContext.MetaData.Max(auId => auId.MetadataId);
+                auid=_metaData.GetAll().Max(auId => auId.MetadataId);
             }
             catch (Exception e)
             {
@@ -89,16 +94,15 @@ namespace CMPG_323_Project2.Controllers
             photoViewModelMeta.metadataVm.MetadataId = auid;
 
             photoViewModelMeta.metadataVm.PhotoId=photoViewModelMeta.photoVm.PhotoId;
-            _DBContext.Attach(photoViewModelMeta.metadataVm);
-            _DBContext.Entry(photoViewModelMeta.metadataVm).State = EntityState.Added;
-            _DBContext.SaveChanges();
+            _metaData.Insert(photoViewModelMeta.metadataVm);
+           
 
 
 
             auid = 0;
             try
             {
-                auid = _DBContext.UserPhotos.Max(auId => auId.ShareId);
+                auid=_link.GetAll().Max(auId => auId.ShareId);
             }
             catch (Exception e)
             {
@@ -118,16 +122,14 @@ namespace CMPG_323_Project2.Controllers
             photoViewModelMeta.userphotVm.PhotoId = photoViewModelMeta.photoVm.PhotoId;
             photoViewModelMeta.userphotVm.UserId = _UserManager.GetUserId(HttpContext.User); 
             photoViewModelMeta.userphotVm.RecepientUserId = _UserManager.GetUserId(HttpContext.User);
-            _DBContext.Attach(photoViewModelMeta.userphotVm);
-            _DBContext.Entry(photoViewModelMeta.userphotVm).State = EntityState.Added;
-            _DBContext.SaveChanges();
+            _link.Insert(photoViewModelMeta.userphotVm);
 
 
             return Redirect("/UserPhoto");
         }
         private int photoToMeta(int Id)
         {
-            MetaDatum md = _DBContext.MetaData.Where(p => p.PhotoId == Id).FirstOrDefault();
+            MetaDatum md=_metaData.GetById(Id);
             return md.MetadataId;
         }
 
@@ -137,8 +139,8 @@ namespace CMPG_323_Project2.Controllers
         {
             int v = photoToMeta(Id);
             PhotoViewModelMetaData pmVm = new PhotoViewModelMetaData();
-            MetaDatum metaDatum = _DBContext.MetaData.Where(p => p.MetadataId == v).FirstOrDefault();
-            Photo photo = _DBContext.Photos.Where(p => p.PhotoId == Id).FirstOrDefault();
+            MetaDatum metaDatum=_metaData.GetById(v);
+            Photo photo=_photo.GetById(Id);
             pmVm.metadataVm = metaDatum;
             pmVm.photoVm = photo;
             return View(pmVm);

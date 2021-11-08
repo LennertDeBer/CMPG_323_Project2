@@ -1,5 +1,6 @@
 ﻿using CMPG_323_Project2.Data;
 using CMPG_323_Project2.Models;
+using CMPG_323_Project2.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,17 +13,18 @@ namespace CMPG_323_Project2.Controllers
     public class PhotoController : Controller
     {
 
-        private readonly CMPG_DBContext _DBContext;
+        //private readonly CMPG_DBContext _DBContext;
+        private readonly IGenericRepository<Photo> _photo;
 
 
-        public PhotoController(CMPG_DBContext DBContext)
+        public PhotoController(IGenericRepository<Photo> photo)
         {
-            _DBContext = DBContext;
+            _photo=photo;
         }
         public IActionResult Index()
         {
 
-            List<Photo> photos = _DBContext.Photos.ToList();
+            List<Photo> photos=_photo.GetAll();
             return View(photos);
         }
 
@@ -40,7 +42,7 @@ namespace CMPG_323_Project2.Controllers
             int auid = 0;
             try
             {
-                auid = _DBContext.Photos.Max(auId => auId.PhotoId);
+                auid=_photo.GetAll().Max(auId => auId.PhotoId);
             }
             catch (Exception e)
             {
@@ -58,9 +60,7 @@ namespace CMPG_323_Project2.Controllers
             }
 
             photo.PhotoId = auid;
-            _DBContext.Attach(photo);
-            _DBContext.Entry(photo).State = EntityState.Added;
-            _DBContext.SaveChanges();
+            _photo.Insert(photo);
 
 
             return RedirectToAction("index");
@@ -69,22 +69,23 @@ namespace CMPG_323_Project2.Controllers
         [HttpGet]
         public IActionResult Delete(int Id)
         {
-            Photo photo = _DBContext.Photos.Where(p => p.PhotoId == Id).FirstOrDefault();
+            Photo photo=_photo.GetById(Id);
             return View(photo);
         }
         [HttpPost]
         public IActionResult Delete(Photo photo)
         {
-            _DBContext.Attach(photo);
-            _DBContext.Entry(photo).State = EntityState.Deleted;
-            _DBContext.SaveChanges();
+            _photo.Delete(photo.PhotoId);
+            //_DBContext.Attach(photo);
+            //_DBContext.Entry(photo).State = EntityState.Deleted;
+            //_DBContext.SaveChanges();
 
             return Redirect("/UserPhoto");
         }
 
         public IActionResult Details(int Id)
         {
-            Photo metaDatum = _DBContext.Photos.Where(p => p.PhotoId == Id).FirstOrDefault();
+            Photo metaDatum=_photo.GetById(Id);
             return View(metaDatum);
 
         }

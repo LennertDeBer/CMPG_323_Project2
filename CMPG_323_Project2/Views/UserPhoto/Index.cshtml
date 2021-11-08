@@ -7,6 +7,16 @@
         height: 175px;
     }
 </style>
+<form action="/MetaData/Search/?searchNeed&?colNeed" method="post">
+    <select name="colNeed" id="Column">
+        <option value="Geolocation">Geolocation</option>
+        <option value="Tags">Tags</option>
+        <option value="Captured_Date">Captured Date</option>
+        <option value="Captured_By">Captured By</option>
+    </select>
+    <input type="text" name="searchNeed" />
+    <input type="submit" value="Search" />
+</form>
 <p>
     <a asp-controller="PhotoMetaData" asp-action="Create">UploadImage</a>
 </p>

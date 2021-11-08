@@ -9,34 +9,47 @@ using CMPG_323_Project2.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using CMPG_323_Project2.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
+using CMPG_323_Project2.Repository;
+using Microsoft.Data.SqlClient;
+using System.Linq.Expressions;
 
 namespace CMPG_323_Project2.Controllers
 {
     public class UserPhotoController : Controller
     {
-        private readonly CMPG_DBContext _DBContext;
+        //private readonly CMPG_DBContext _DBContext;
+        private readonly IGenericRepository<Photo> _photo;
+        private readonly IGenericRepository<AspNetUser> _user;
+        private readonly IGenericRepository<UserPhoto> _link;
+        // ;
         private readonly UserManager<AppUser> _UserManager;
-        public UserPhotoController(CMPG_DBContext DBContext, UserManager<AppUser> UserManager)
+        public UserPhotoController(IGenericRepository<Photo> photo,
+            IGenericRepository<AspNetUser> user, 
+            IGenericRepository<UserPhoto> link
+            , UserManager<AppUser> UserManager)
         {
-            _DBContext = DBContext;
-            _UserManager = UserManager;
+            _photo=photo;
+            _link=link;
+            _user=user;
+            _UserManager=UserManager;
+
         }
         public IActionResult Index()
         {
 
 
-            var usid = _UserManager.GetUserId(HttpContext.User);
-            List<AspNetUser> accountusers = _DBContext.AspNetUsers.ToList();
-            List<UserPhoto> user_image_link = _DBContext.UserPhotos.ToList();
-            List<Photo> images = _DBContext.Photos.ToList();
-            var userViewModelImages = from uil in user_image_link
+            var usid=_UserManager.GetUserId(HttpContext.User);
+            List<AspNetUser> accountusers=_user.GetAll();
+            List<UserPhoto> user_image_link=_link.Find("select * from(select *, row_number() over(partition by User_ID, Photo_ID order by Photo_ID) as row_number from[dbo].UserPhoto) as rows where row_number = 1");
+            List<Photo> images=_photo.GetAll();
+            var userViewModelImages=from uil in user_image_link
                                       from u in accountusers
                                       from i in images
                                       where u.Id == usid
-                                      && (uil.UserId == u.Id
-                                      || uil.RecepientUserId == u.Id)
-                                      where uil.PhotoId == i.PhotoId
-                                      select new UserViewModelPhoto { userVm = u, photoVm = i };
+                                      && (uil.UserId==u.Id
+                                      || uil.RecepientUserId==u.Id)
+                                      where uil.PhotoId==i.PhotoId
+                                      select new UserViewModelPhoto { userVm=u, photoVm=i };
             return View(userViewModelImages);
 
         }
@@ -44,10 +57,10 @@ namespace CMPG_323_Project2.Controllers
         {
 
 
-            var usid = _UserManager.GetUserId(HttpContext.User);
-            List<AspNetUser> accountusers = _DBContext.AspNetUsers.ToList();
-            List<UserPhoto> user_image_link = _DBContext.UserPhotos.ToList();
-            List<Photo> images = _DBContext.Photos.ToList();
+            var usid=_UserManager.GetUserId(HttpContext.User);
+            List<AspNetUser> accountusers=_user.GetAll();
+            List<UserPhoto> user_image_link = _link.Find("select * from(select *, row_number() over(partition by User_ID, Photo_ID order by Photo_ID) as row_number from[dbo].UserPhoto) as rows where row_number = 1");
+            List<Photo> images = _photo.GetAll(); 
             var userViewModelImages = from uil in user_image_link
                                       from u in accountusers
                                       from i in images
@@ -62,31 +75,38 @@ namespace CMPG_323_Project2.Controllers
         public IActionResult ShareTo(int Id)
         {
             UserViewModelPhoto userViewModelPhoto = new UserViewModelPhoto();
-            Photo photo = _DBContext.Photos.Where(p => p.PhotoId == Id).FirstOrDefault();
-            AspNetUser aspUser = _DBContext.AspNetUsers.Where(p => p.Id == _UserManager.GetUserId(HttpContext.User)).FirstOrDefault();
+
+
+            Photo photo=_photo.GetById(Id);
+                //_DBContext.Photos.Where(p => p.PhotoId == Id).FirstOrDefault();
+            AspNetUser aspUser=_user.GetById(_UserManager.GetUserId(HttpContext.User));
+                //_DBContext.AspNetUsers.Where(p => p.Id == _UserManager.GetUserId(HttpContext.User)).FirstOrDefault();
             userViewModelPhoto.photoVm = photo;
             userViewModelPhoto.userVm = aspUser;
             return View(userViewModelPhoto);
         }
         [HttpPost]
-        public IActionResult ShareTo(int PId,String Email)
+        public IActionResult ShareTo(int PId, String Email)
         {
-            AspNetUser aspUser = _DBContext.AspNetUsers.Where(p => p.Email == Email).FirstOrDefault();
-            if(aspUser==null)
+            //AspNetUser aspUser = _user.GetById(Email);
+
+            AspNetUser aspUser = _user.GetAll().Where(p => p.Email == Email).FirstOrDefault();
+            if (aspUser == null)
             {
                 ViewBag.Message = "userNF";
 
                 return View();
 
             }
-            else {
+            else
+            {
                 UserPhoto userPhoto = new UserPhoto();
-               
-                
+
+
                 int auid = 0;
                 try
                 {
-                    auid = _DBContext.UserPhotos.Max(auId => auId.ShareId);
+                    auid = _link.GetAll().Max(auId => auId.ShareId);
                 }
                 catch (Exception e)
                 {
@@ -102,22 +122,22 @@ namespace CMPG_323_Project2.Controllers
                     auNo++;
                     auid = auNo;
                 }
-                AspNetUser currentUser = _DBContext.AspNetUsers.Where(p => p.Id == _UserManager.GetUserId(HttpContext.User)).FirstOrDefault();
+                AspNetUser currentUser = _user.GetById(_UserManager.GetUserId(HttpContext.User));
                 userPhoto.ShareId = auid;
-                userPhoto.RecepientUserId= aspUser.Id;
+
+                userPhoto.RecepientUserId = aspUser.Id;
 
 
                 userPhoto.UserId = currentUser.Id;
                 userPhoto.PhotoId = PId;
-                _DBContext.Attach(userPhoto);
-                _DBContext.Entry(userPhoto).State = EntityState.Added;
-                _DBContext.SaveChanges();
+                _link.Insert(userPhoto);
+
 
 
                 return RedirectToAction("index");
 
 
-                
+
             }
         }
 
@@ -126,9 +146,9 @@ namespace CMPG_323_Project2.Controllers
 
 
             var usid = _UserManager.GetUserId(HttpContext.User);
-            List<AspNetUser> accountusers = _DBContext.AspNetUsers.ToList();
-            List<UserPhoto> user_image_link = _DBContext.UserPhotos.ToList();
-            List<Photo> images = _DBContext.Photos.ToList();
+            List<AspNetUser> accountusers = _user.GetAll();
+            List<UserPhoto> user_image_link = _link.GetAll();
+            List<Photo> images = _photo.GetAll();
             var userViewModelImages = from uil in user_image_link
                                       from u in accountusers
                                       from sender in accountusers
@@ -143,7 +163,7 @@ namespace CMPG_323_Project2.Controllers
                                       select new UserViewModelPhoto { userVm = sender, photoVm = i };
             return View(userViewModelImages);
         }
-        
+
 
     }
 }

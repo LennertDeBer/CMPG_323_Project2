@@ -319,7 +319,8 @@ namespace CMPG_323_Project2.Migrations
                     b.HasOne("CMPG_323_Project2.Models.Photo", "Photo")
                         .WithMany("Contains")
                         .HasForeignKey("PhotoId")
-                        .HasConstraintName("FK_Contain_Photo");
+                        .HasConstraintName("FK_Contain_Photo")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Album");
 

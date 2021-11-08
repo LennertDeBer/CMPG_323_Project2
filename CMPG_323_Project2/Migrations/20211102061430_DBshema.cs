@@ -152,7 +152,7 @@ namespace CMPG_323_Project2.Migrations
                         column: x => x.Photo_ID,
                         principalTable: "Photo",
                         principalColumn: "Photo_ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
