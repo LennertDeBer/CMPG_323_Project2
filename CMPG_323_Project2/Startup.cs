@@ -34,6 +34,9 @@ namespace CMPG_323_Project2
             services.AddTransient<IGenericRepository<AspNetUser>, GenericRepository<AspNetUser>>();
             services.AddTransient<IGenericRepository<UserPhoto>, GenericRepository<UserPhoto>>();
             services.AddTransient<IGenericRepository<MetaDatum>, GenericRepository<MetaDatum>>();
+            services.AddTransient<IGenericRepository<Album>, GenericRepository < Album>>();
+            services.AddTransient<IGenericRepository<Contain>, GenericRepository<Contain>>();
+            services.AddTransient<IGenericRepository<ShareAlbum>, GenericRepository<ShareAlbum>>();
             //services.AddTransient<IGenericRepository<UserViewModelPhoto>, GenericRepository<UserViewModelPhoto>>();
             services.AddRazorPages();
         

@@ -1,6 +1,7 @@
 ﻿using CMPG_323_Project2.Areas.Identity.Data;
 using CMPG_323_Project2.Data;
 using CMPG_323_Project2.Models;
+using CMPG_323_Project2.Repository;
 using CMPG_323_Project2.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,20 +16,26 @@ namespace CMPG_323_Project2.Controllers
     public class ContainController : Controller
     {
 
-        private readonly CMPG_DBContext _DBContext;
+        private readonly IGenericRepository<Contain> _contain;
+        private readonly IGenericRepository<Album> _album;
+        private readonly IGenericRepository<Photo> _photo;
+        private readonly IGenericRepository<UserPhoto> _userPhoto;
         private readonly UserManager<AppUser> _UserManager;
-        public ContainController(CMPG_DBContext DBContext, UserManager<AppUser> UserManager)
+        public ContainController(IGenericRepository<Contain> contain, IGenericRepository<Album> album, IGenericRepository<Photo> photo, IGenericRepository<UserPhoto> userPhoto, UserManager<AppUser> UserManager)
         {
-            _DBContext = DBContext;
+            _contain = contain;
+            _album = album;
+            _photo = photo;
+            _userPhoto = userPhoto;
             _UserManager = UserManager;
         }
 
         public IActionResult Index(int Id)
         {
 
-            List<Photo> photos = _DBContext.Photos.ToList();
-            List<Contain> contains = _DBContext.Contains.ToList();
-            List<Album> albums = _DBContext.Albums.ToList();
+            List<Photo> photos = _photo.GetAll();
+            List<Contain> contains = _contain.GetAll();
+            List<Album> albums = _album.GetAll();
             var userViewModelImages = from c in contains
                                       from p in photos
                                       from a in albums
@@ -54,9 +61,9 @@ namespace CMPG_323_Project2.Controllers
         {
             if (first)
             {
-                Photo photos = _DBContext.Photos.Where(p => p.PhotoId == IdP).FirstOrDefault();
-                Contain contains = _DBContext.Contains.FirstOrDefault();
-                Album albums = _DBContext.Albums.Where(p => p.AlbumId == IdA).FirstOrDefault();
+                Photo photos = _photo.GetById(IdP);
+                Contain contains = _contain.GetAll().FirstOrDefault();
+                Album albums = _album.GetById(IdA);
                 AlbumViewModelPhoto userViewModelImages = new AlbumViewModelPhoto();
                 userViewModelImages.albumVm = albums;
                 userViewModelImages.photoVm = photos;
@@ -81,7 +88,7 @@ namespace CMPG_323_Project2.Controllers
             int auid = 0;
             try
             {
-                auid = _DBContext.Contains.Max(auId => auId.ContainId);
+                auid = _contain.GetAll().Max(auId => auId.ContainId);
             }
             catch (Exception e)
             {
@@ -106,9 +113,7 @@ namespace CMPG_323_Project2.Controllers
 
             //userPhoto.UserId = currentUser.Id;
             //userPhoto.PhotoId = PId;
-            _DBContext.Attach(contain);
-            _DBContext.Entry(contain).State = EntityState.Added;
-            _DBContext.SaveChanges();
+            _contain.Insert(contain);
 
 
             return Redirect("/Contain/index/"+ IdA);
@@ -116,9 +121,9 @@ namespace CMPG_323_Project2.Controllers
         [HttpGet]
         public IActionResult RemovePhoto(int IdA,int IdP,int IdC)
         {
-            Photo photos = _DBContext.Photos.Where(p => p.PhotoId == IdP).FirstOrDefault();
-           Contain contains = _DBContext.Contains.Where(p => p.ContainId == IdC).FirstOrDefault();
-            Album albums = _DBContext.Albums.Where(p=>p.AlbumId==IdA).FirstOrDefault();
+            Photo photos = _photo.GetById(IdP);
+           Contain contains = _contain.GetAll().FirstOrDefault();
+            Album albums = _album.GetById(IdA);
             AlbumViewModelPhoto albumViewModelPhoto = new AlbumViewModelPhoto();
             albumViewModelPhoto.albumVm = albums;
             albumViewModelPhoto.photoVm = photos;
@@ -139,7 +144,7 @@ namespace CMPG_323_Project2.Controllers
         {
             var usid = _UserManager.GetUserId(HttpContext.User);
            // List<AspNetUser> accountusers = _DBContext.AspNetUsers.ToList();
-            List<UserPhoto> user_image_link = _DBContext.UserPhotos.ToList();
+            List<UserPhoto> user_image_link = _userPhoto.GetAll();
             //List<Photo> images = _DBContext.Photos.ToList();
             //var userViewModelImages = from uil in user_image_link
             //                          from u in accountusers
@@ -148,8 +153,8 @@ namespace CMPG_323_Project2.Controllers
             //                          && (uil.UserId == u.Id)
             //                          where uil.PhotoId == i.PhotoId
             //                          select new UserViewModelPhoto { userVm = u, photoVm = i };
-            List<Photo> photos = _DBContext.Photos.ToList();
-        List<Album> albums = _DBContext.Albums.ToList();
+            List<Photo> photos = _photo.GetAll();
+            List<Album> albums = _album.GetAll();
      
             var albumViewModelPhoto =   from p in photos
                                         from a in albums
@@ -170,13 +175,11 @@ namespace CMPG_323_Project2.Controllers
         [HttpPost]
         public IActionResult RemovePhoto(int IdC)
         {
-            Contain contains = _DBContext.Contains.Where(p => p.ContainId == IdC).FirstOrDefault();
+            Contain contains = _contain.GetById(IdC);
 
-            _DBContext.Attach(contains);
-            _DBContext.Entry(contains).State = EntityState.Deleted;
-            _DBContext.SaveChanges();
+            _contain.Delete(contains.ContainId);
 
-            return Redirect("index");
+            return RedirectToAction("index/"+contains.AlbumId);
         }
     }
 }
