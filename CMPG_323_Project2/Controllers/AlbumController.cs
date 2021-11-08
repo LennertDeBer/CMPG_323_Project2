@@ -1,5 +1,6 @@
 ﻿using CMPG_323_Project2.Data;
 using CMPG_323_Project2.Models;
+using CMPG_323_Project2.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,35 +15,33 @@ namespace CMPG_323_Project2.Controllers
 
     public class AlbumController : Controller
     {
-        private readonly CMPG_DBContext _DBContext;
-        public AlbumController(CMPG_DBContext DBContext)
+        private readonly IGenericRepository<Album> _album;
+        public AlbumController(IGenericRepository<Album> album)
         {
-            _DBContext=DBContext;
+            _album = album;
         }
         public IActionResult Index()
         {
-            List<Album> albums=_DBContext.Albums.ToList();
+            List<Album> albums=_album.GetAll();
             return View(albums);
         }
 
         public IActionResult Details(int Id)
         {
-            Album album=_DBContext.Albums.Where(p => p.AlbumId==Id).FirstOrDefault();
+            Album album=_album.GetById(Id);
             return View(album);
         }
 
         [HttpGet]
         public IActionResult Edit(int Id)
         {
-            Album album=_DBContext.Albums.Where(p => p.AlbumId==Id).FirstOrDefault();
+            Album album = _album.GetById(Id) ;
             return View(album);
         }
         [HttpPost]
         public IActionResult Edit(Album album)
         {
-            _DBContext.Attach(album);
-            _DBContext.Entry(album).State=EntityState.Modified;
-            _DBContext.SaveChanges();
+            _album.Update(album);
 
             return RedirectToAction("index");
         }
@@ -50,7 +49,7 @@ namespace CMPG_323_Project2.Controllers
         [HttpGet]
         public IActionResult Create(int Id)
         {
-            Album album=new Album();
+            Album album = new Album();
             return View(album);
         }
         [HttpPost]
@@ -59,7 +58,7 @@ namespace CMPG_323_Project2.Controllers
             int auid=0;
             try
             {
-                auid=_DBContext.Albums.Max(auId => auId.AlbumId);
+                auid=_album.GetAll().Max(auId => auId.AlbumId);
             }
             catch (Exception e)
             {
@@ -76,9 +75,7 @@ namespace CMPG_323_Project2.Controllers
             }
 
             album.AlbumId=auid;
-            _DBContext.Attach(album);
-            _DBContext.Entry(album).State=EntityState.Added;
-            _DBContext.SaveChanges();
+            _album.Insert(album);
 
 
             return RedirectToAction("index");
@@ -87,15 +84,13 @@ namespace CMPG_323_Project2.Controllers
         [HttpGet]
         public IActionResult Delete(int Id)
         {
-            Album album=_DBContext.Albums.Where(p => p.AlbumId==Id).FirstOrDefault();
+            Album album = _album.GetById(Id);
             return View(album);
         }
         [HttpPost]
         public IActionResult Delete(Album album)
         {
-            _DBContext.Attach(album);
-            _DBContext.Entry(album).State=EntityState.Deleted;
-            _DBContext.SaveChanges();
+            _album.Delete(album.AlbumId);
 
             return RedirectToAction("index");
         }
