@@ -71,6 +71,15 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="ShareAlbum" asp-action="Index">All Album's</a>
                             </li>
                         }
+                        @if (Context.Request.GetEncodedUrl().ToString() == "https://localhost:44347/ShareAlbum")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ShareAlbum" asp-action="MyAlbum">My Album's</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ShareAlbum" asp-action="AlbumShared">Albums shared to me</a>
+                            </li>
+                        }
 
                         //testc CRUD
                         @*<li class="nav-item">

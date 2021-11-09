@@ -55,6 +55,7 @@ namespace CMPG_323_Project2.Controllers
         [HttpPost]
         public IActionResult Create(Album album)
         {
+            
             int auid=0;
             try
             {

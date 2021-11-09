@@ -24,6 +24,10 @@
                 <input asp-for="albumVm.AlbumName" class="form-control" />
                 <span asp-validation-for="albumVm.AlbumName" class="text-danger"></span>
             </div>
+            @if (ViewBag.Message!=null)
+            {
+                <label>@ViewBag.Message</label>
+            }
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
