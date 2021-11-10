@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using CMPG_323_Project2.Repository;
 using Microsoft.Data.SqlClient;
 using System.Linq.Expressions;
+using CMPG_323_Project2.Logic;
 
 namespace CMPG_323_Project2.Controllers
 {
@@ -21,17 +22,20 @@ namespace CMPG_323_Project2.Controllers
         private readonly IGenericRepository<Photo> _photo;
         private readonly IGenericRepository<AspNetUser> _user;
         private readonly IGenericRepository<UserPhoto> _link;
+        private readonly IFileManagerLogic _fileManagerLogic;
         // ;
         private readonly UserManager<AppUser> _UserManager;
         public UserPhotoController(IGenericRepository<Photo> photo,
             IGenericRepository<AspNetUser> user, 
             IGenericRepository<UserPhoto> link
-            , UserManager<AppUser> UserManager)
+            , UserManager<AppUser> UserManager,
+            IFileManagerLogic fileManagerLogic)
         {
             _photo=photo;
             _link=link;
             _user=user;
             _UserManager=UserManager;
+            _fileManagerLogic = fileManagerLogic;
 
         }
         public IActionResult Index()
@@ -205,9 +209,12 @@ namespace CMPG_323_Project2.Controllers
             _link.Delete(album.userPhotoVm.ShareId);
             return RedirectToAction("index");
         }
-       
-        
-        
+
+        public async Task<IActionResult> Download(int id)
+        {
+            var result = await _fileManagerLogic.GetData(id.ToString());
+            return File(result, "application/octet-stream");
+        }
 
 
     }

@@ -3,6 +3,7 @@ using CMPG_323_Project2.Models;
 //using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,6 +29,20 @@ namespace CMPG_323_Project2.Logic
             var blobClient = blobContainer.GetBlobClient(filename);
 
             return blobClient.Uri.ToString();
+        }
+
+        public async Task<byte[]> GetData(string filename)
+        {
+            var blobContainer = _blobServiceClient.GetBlobContainerClient("uploadimage");
+            var blobClient = blobContainer.GetBlobClient(filename);
+
+            var imageDownload = await blobClient.DownloadAsync();
+
+            using(MemoryStream ms = new MemoryStream())
+            {
+                await imageDownload.Value.Content.CopyToAsync(ms);
+                return ms.ToArray();
+            }
         }
     }
 }
