@@ -212,9 +212,9 @@ namespace CMPG_323_Project2.Migrations
                         .HasColumnName("Photo_ID");
 
                     b.Property<string>("PhotoUrl")
-                        .HasMaxLength(50)
+                        .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("varchar(100)")
                         .HasColumnName("Photo_URL");
 
                     b.HasKey("PhotoId");

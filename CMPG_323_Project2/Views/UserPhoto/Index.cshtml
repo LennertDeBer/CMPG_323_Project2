@@ -3,8 +3,8 @@
 <style>
     .avatar {
         vertical-align: middle;
-        width: 410px;
-        height: 175px;
+        width: 100px;
+        height: 100px;
     }
 </style>
 <form action="/MetaData/Search/?searchNeed&?colNeed" method="post">
@@ -34,10 +34,11 @@
     </td>
     <td>
         <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@item.photoVm.PhotoId">Edit</a> |
-       
+
         <a asp-controller="PhotoMetaData" asp-action="Details" asp-route-id="@item.photoVm.PhotoId">Details</a> |
-        <a asp-controller="Photo"asp-action="Delete" asp-route-id="@item.photoVm.PhotoId">Delete</a>
-        <a asp-controller="UserPhoto" asp-action="ShareTo" asp-route-id="@item.photoVm.PhotoId">Share</a>
+        <a asp-controller="Photo" asp-action="Delete" asp-route-id="@item.photoVm.PhotoId">Delete</a> |
+        <a asp-controller="UserPhoto" asp-action="ShareTo" asp-route-id="@item.photoVm.PhotoId">Share</a> |
+        <a asp-controller="UserPhoto" asp-action="Download" asp-route-id="@item.photoVm.PhotoId">Download</a>
     </td>
 </tr>
     }

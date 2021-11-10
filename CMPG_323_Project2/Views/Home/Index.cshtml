@@ -7,10 +7,50 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div>
 
+    @*<h4>Single File Upload</h4>
+
+    <form asp-controller="Home" asp-action="SingleFile" enctype="multipart/form-data" method="post">
+
+        <input id="MyInput" type="file" name="file"
+               onchange="checkFile()" />
+
+        <button id="submitButton" type="submit" onclick="testDataType" disabled>MyInput  Submit</button>
+
+    </form>
+
+    <img src="https://project2blob.blob.core.windows.net/uploadimage/linux1.PNG" />
+
+
+    <script type="text/javascript">
+        function checkFile() {
+            var fileElement = document.getElementById("MyInput");
+
+            var fileExtension = "";
+            if (fileElement.value.lastIndexOf(".") > 0) {
+                fileExtension = fileElement.value.substring(fileElement.value.lastIndexOf(".") + 1, fileElement.value.length);
+            }
+            if (fileExtension.toLowerCase() == "png" || fileExtension.toLowerCase() == "bmp"
+                || fileExtension.toLowerCase() == "ico" || fileExtension.toLowerCase() == "jpeg"
+                || fileExtension.toLowerCase() == "jpg" || fileExtension.toLowerCase() == "gif"
+                || fileExtension.toLowerCase() == "tiff") {
+                document.getElementById("submitButton").disabled = false;
+
+            }
+            else {
+                fileElement.value = "";
+                alert("Unsupported format, please upload the content in a different format");
+            }
+        }
+
+    </script>*@
+
+
+</div>
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-   
+
     @if (SignInManager.IsSignedIn(User))
     {
         <p>@UserManager.GetUserName(User)</p>

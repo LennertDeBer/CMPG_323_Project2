@@ -1,6 +1,8 @@
 ﻿using CMPG_323_Project2.Data;
+using CMPG_323_Project2.Logic;
 using CMPG_323_Project2.Models;
 using CMPG_323_Project2.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,11 +17,13 @@ namespace CMPG_323_Project2.Controllers
 
         //private readonly CMPG_DBContext _DBContext;
         private readonly IGenericRepository<Photo> _photo;
+        private readonly IFileManagerLogic _fileManagerLogic;
 
 
-        public PhotoController(IGenericRepository<Photo> photo)
+        public PhotoController(IGenericRepository<Photo> photo, IFileManagerLogic fileManagerLogic)
         {
             _photo=photo;
+            _fileManagerLogic = fileManagerLogic;
         }
         public IActionResult Index()
         {
@@ -28,7 +32,8 @@ namespace CMPG_323_Project2.Controllers
             return View(photos);
         }
 
-
+     
+       
         [HttpGet]
         public IActionResult Create(int Id)
         {
@@ -36,6 +41,17 @@ namespace CMPG_323_Project2.Controllers
             return View(photo);
         
         }
+
+
+
+
+
+
+
+
+
+
+        /* add to database*/
         [HttpPost]
         public IActionResult Create(Photo photo)
         {
@@ -82,7 +98,15 @@ namespace CMPG_323_Project2.Controllers
 
             return Redirect("/UserPhoto");
         }
+        public async Task<IActionResult> SingleFile(IFormFile file)
+        {
+            FileModel model = new FileModel();
+            model.MyFile = file;
 
+            FileModelController fmc = new FileModelController(_fileManagerLogic);
+                await fmc.UploadFile(model);
+            return Ok();
+        }
         public IActionResult Details(int Id)
         {
             Photo metaDatum=_photo.GetById(Id);

@@ -1,5 +1,6 @@
 ﻿using CMPG_323_Project2.Areas.Identity.Data;
 using CMPG_323_Project2.Data;
+using CMPG_323_Project2.Logic;
 using CMPG_323_Project2.Models;
 using CMPG_323_Project2.Repository;
 using CMPG_323_Project2.ViewModel;
@@ -20,12 +21,14 @@ namespace CMPG_323_Project2.Controllers
         private readonly IGenericRepository<MetaDatum> _metaData;
         private readonly IGenericRepository<UserPhoto> _link;
         private readonly UserManager<AppUser> _UserManager;
-        public PhotoMetadataController(IGenericRepository<Photo> photo, IGenericRepository<MetaDatum> metaData, IGenericRepository<UserPhoto> link, UserManager<AppUser> UserManager)
+        private readonly IFileManagerLogic _fileManagerLogic;
+        public PhotoMetadataController(IGenericRepository<Photo> photo, IGenericRepository<MetaDatum> metaData, IGenericRepository<UserPhoto> link, UserManager<AppUser> UserManager, IFileManagerLogic fileManagerLogic)
         {
             _photo=photo;
             _metaData=metaData;
             _link=link;
             _UserManager = UserManager;
+            _fileManagerLogic = fileManagerLogic;
         }
 
         public IActionResult Index()
@@ -42,7 +45,7 @@ namespace CMPG_323_Project2.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(PhotoViewModelMetaData photoViewModelMeta)
+        public async Task<IActionResult> Create(PhotoViewModelMetaData photoViewModelMeta)
         {
             
 
@@ -65,8 +68,11 @@ namespace CMPG_323_Project2.Controllers
                 auNo++;
                 auid = auNo;
             }
+            await _fileManagerLogic.Upload(photoViewModelMeta.fileModelVm, auid);
 
+            string Url = _fileManagerLogic.read(auid.ToString());
             photoViewModelMeta.photoVm.PhotoId = auid;
+            photoViewModelMeta.photoVm.PhotoUrl = Url;
            _photo.Insert(photoViewModelMeta.photoVm);
            
 

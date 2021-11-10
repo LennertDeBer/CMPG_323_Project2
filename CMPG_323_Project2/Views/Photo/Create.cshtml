@@ -8,41 +8,47 @@
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@*<partial name="~/Views/MetaData/create.cshtml" />*@
-<h1>Create</h1>
-
-<h4>Photo</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="PhotoId" />
-            @*<div class="form-group">
-                    <label asp-for="PhotoId" class="control-label"></label>
-                    <input asp-for="PhotoId" class="form-control" />
-                    <span asp-validation-for="PhotoId" class="text-danger"></span>
-                </div>*@
-            <div class="form-group">
-                <label asp-for="PhotoUrl" class="control-label"></label>
-                <input asp-for="PhotoUrl" class="form-control" />
-                <span asp-validation-for="PhotoUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
 <div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+    <h4>Single File Upload</h4>
+
+    <form asp-controller="Photo" asp-action="SingleFile" enctype="multipart/form-data" method="post">
+
+        <input id="MyInput" type="file" name="file"
+               onchange="checkFile()" />
+
+        <button id="submitButton" type="submit" onclick="testDataType" disabled>MyInput  Submit</button>
+
+    </form>
 
 
-@section Scripts {
-   
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-   
-}
+
+
+    <script type="text/javascript">
+        function checkFile() {
+            var fileElement = document.getElementById("MyInput");
+
+            var fileExtension = "";
+            if (fileElement.value.lastIndexOf(".") > 0) {
+                fileExtension = fileElement.value.substring(fileElement.value.lastIndexOf(".") + 1, fileElement.value.length);
+            }
+            if (fileExtension.toLowerCase() == "png" || fileExtension.toLowerCase() == "bmp"
+                || fileExtension.toLowerCase() == "ico" || fileExtension.toLowerCase() == "jpeg"
+                || fileExtension.toLowerCase() == "jpg" || fileExtension.toLowerCase() == "gif"
+                || fileExtension.toLowerCase() == "tiff") {
+                document.getElementById("submitButton").disabled = false;
+
+            }
+            else {
+                fileElement.value = "";
+                alert("Unsupported format, please upload the content in a different format");
+            }
+        }
+
+    </script>
+
+    @section Scripts {
+
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    }
