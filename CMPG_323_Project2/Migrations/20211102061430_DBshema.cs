@@ -49,7 +49,7 @@ namespace CMPG_323_Project2.Migrations
                 columns: table => new
                 {
                     Photo_ID = table.Column<int>(type: "int", nullable: false),
-                    Photo_URL = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true)
+                    Photo_URL = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {

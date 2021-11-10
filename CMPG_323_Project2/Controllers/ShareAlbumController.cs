@@ -127,7 +127,7 @@ namespace CMPG_323_Project2.Controllers
 
             int auNo;
             int.TryParse(auid.ToString(), out auNo);
-            if (auNo > 0)
+            if (auNo > 1)
             {
                 auNo++;
                 auid = auNo;
@@ -168,7 +168,7 @@ namespace CMPG_323_Project2.Controllers
             }
             else 
             {
-                ViewBag.Message = "Album already exists";
+                ViewBag.Message = "Album name is already taken";
                 return View();
             }
         }

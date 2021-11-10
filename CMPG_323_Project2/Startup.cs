@@ -1,4 +1,6 @@
+using Azure.Storage.Blobs;
 using CMPG_323_Project2.Data;
+using CMPG_323_Project2.Logic;
 using CMPG_323_Project2.Models;
 using CMPG_323_Project2.Repository;
 using CMPG_323_Project2.ViewModel;
@@ -30,6 +32,10 @@ namespace CMPG_323_Project2
         {
             services.AddControllersWithViews();
             services.AddDbContext<CMPG_DBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AutContextConnection")));
+            services.AddScoped(options => {
+                return new BlobServiceClient(Configuration.GetConnectionString("AzureBlobStorage"));
+                });
+            services.AddScoped<IFileManagerLogic, FileManagerLogic>();
             services.AddTransient<IGenericRepository<Photo>, GenericRepository<Photo>>();
             services.AddTransient<IGenericRepository<AspNetUser>, GenericRepository<AspNetUser>>();
             services.AddTransient<IGenericRepository<UserPhoto>, GenericRepository<UserPhoto>>();

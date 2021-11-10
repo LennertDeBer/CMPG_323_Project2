@@ -10,6 +10,7 @@ namespace CMPG_323_Project2.ViewModel
     {
       public UserPhoto userphotVm { get; set; }
         public Photo photoVm { get; set; }
+        public FileModel fileModelVm { get; set; }
         public MetaDatum metadataVm { get; set; }
     }
 }
