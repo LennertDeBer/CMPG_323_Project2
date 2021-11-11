@@ -11,5 +11,6 @@ namespace CMPG_323_Project2.Logic
         public Task Upload(FileModel model,int Id);
         public string read(string filename);
         public Task<byte[]> GetData(string filename);
+        public Task Delete(string filename);
     }
 }

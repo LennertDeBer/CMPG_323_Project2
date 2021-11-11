@@ -62,14 +62,14 @@ namespace CMPG_323_Project2.Controllers
             }
             catch (Exception e)
             {
-                auid = 1;
+                auid = 0;
             }
 
 
 
             int auNo;
             int.TryParse(auid.ToString(), out auNo);
-            if (auNo > 0)
+            if (auNo >= 0)
             {
                 auNo++;
                 auid = auNo;
@@ -92,6 +92,7 @@ namespace CMPG_323_Project2.Controllers
         public IActionResult Delete(Photo photo)
         {
             _photo.Delete(photo.PhotoId);
+          _fileManagerLogic.Delete(photo.PhotoId.ToString());
             //_DBContext.Attach(photo);
             //_DBContext.Entry(photo).State = EntityState.Deleted;
             //_DBContext.SaveChanges();

@@ -92,14 +92,14 @@ namespace CMPG_323_Project2.Controllers
             }
             catch (Exception e)
             {
-                auid = 1;
+                auid = 0;
             }
 
 
 
             int auNo;
             int.TryParse(auid.ToString(), out auNo);
-            if (auNo > 0)
+            if (auNo >= 0)
             {
                 auNo++;
                 auid = auNo;

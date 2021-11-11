@@ -44,5 +44,12 @@ namespace CMPG_323_Project2.Logic
                 return ms.ToArray();
             }
         }
+        public async Task Delete(string filename)
+        {
+            var blobContainer = _blobServiceClient.GetBlobContainerClient("uploadimage");
+            var blobClient = blobContainer.GetBlobClient(filename);
+
+            await blobClient.DeleteIfExistsAsync();
+        }
     }
 }
