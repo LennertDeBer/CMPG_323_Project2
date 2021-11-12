@@ -18,7 +18,7 @@
     <input type="submit" value="Search" />
 </form>
 <p>
-    <a asp-controller="PhotoMetaData" asp-action="Create">UploadImage</a>
+    <a asp-controller="PhotoMetaData" asp-action="Create" class="btn btn-sm btn-success">UploadImage</a>
 </p>
 <table class="table table-striped">
     <tr>
@@ -33,12 +33,12 @@
         <img src="@item.photoVm.PhotoUrl" alt="@item.photoVm.PhotoUrl" class="avatar" />
     </td>
     <td>
-        <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@item.photoVm.PhotoId">Edit</a> |
+        <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-primary">Edit</a> |
 
-        <a asp-controller="PhotoMetaData" asp-action="Details" asp-route-id="@item.photoVm.PhotoId">Details</a> |
-        <a asp-controller="Photo" asp-action="Delete" asp-route-id="@item.photoVm.PhotoId">Delete</a> |
-        <a asp-controller="UserPhoto" asp-action="ShareTo" asp-route-id="@item.photoVm.PhotoId">Share</a> |
-        <a asp-controller="UserPhoto" asp-action="Download" asp-route-id="@item.photoVm.PhotoId">Download</a>
+        <a asp-controller="PhotoMetaData" asp-action="Details" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-info">Details</a> |
+        <a asp-controller="Photo" asp-action="Delete" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-danger">Delete</a> |
+        <a asp-controller="UserPhoto" asp-action="ShareTo" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-light">Share</a> |
+        <a asp-controller="UserPhoto" asp-action="Download" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-outline-dark">Download</a>
     </td>
 </tr>
     }

@@ -19,7 +19,7 @@
         {
 
 
-            <form action="/Contain/SelectPhoto?AlbumId" method="get">
+            <form action="/Contain/SelectPhoto?AlbumId" method="get" class="btn btn-sm btn-success">
 
 
             <input type="hidden" asp-for="@item.albumVm.AlbumId" name="AlbumId" />
@@ -35,7 +35,7 @@
 
 
 
-        @Html.ActionLink("Select Photo", "SelectPhoto", new { ViewBag.AlbumId }, null)
+        @Html.ActionLink("Select Photo", "SelectPhoto", new { ViewBag.AlbumId }, new { @class = "btn btn-success"})
 
         @*@Html.RouteLink("NewText","/Contain/SelectPhoto", new { ViewBag.AlbumId })*@
 
@@ -71,7 +71,7 @@
                     <input type="hidden" asp-for="@item.containVm.ContainId" name="IdC" />
                     <input type="hidden" asp-for="@item.albumVm.AlbumId" name="IdA" />
                     <input type="hidden" asp-for="@item.containVm.ContainId" name="IdP" />
-                    <input type="submit" value="RemovePhoto" />
+                    <input type="submit" value="RemovePhoto" class="btn btn-sm btn-danger"/>
                 </form>
 
             </td>

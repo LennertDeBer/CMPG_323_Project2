@@ -21,7 +21,7 @@
 <form action="/ShareAlbum/ShareToUser/?AId&?Email" method="post">
     <input type="hidden" asp-for="albumVm.AlbumId" name="AId" />
     <input type="text" name="Email" />
-    <input type="submit" value="Share" />
+    <input type="submit" value="Share" class="btn btn-sm btn-light"/>
     @if (ViewBag.Message == "userNF")
     {
         <label>User not found</label>
