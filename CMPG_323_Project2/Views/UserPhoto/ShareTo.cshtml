@@ -11,26 +11,26 @@
 <div>
     <h4>Photo</h4>
     <hr />
-    <dl class="row">
+    @*<dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.photoVm.PhotoUrl)
         </dt>
         <dd class="col-sm-10">
             <img src=model.photoVm.PhotoUrl alt="model.photoVm.PhotoUrl" class="avatar" />
         </dd>
-    </dl>
+    </dl>*@
 </div>
 
-        
+
 
 
 <form action="/UserPhoto/ShareTo/?PId&?Email" method="post">
     <input type="hidden" asp-for="photoVm.PhotoId" name="PId" />
     <input type="text" name="Email" />
-    <input type="submit" value="Share" class="btn btn-sm btn-"/>
+    <input type="submit" value="Share" class="btn btn-sm btn-light" />
     @if (ViewBag.Message == "userNF")
     {
-        <label>User not found</label>
+        <label>User not found, please ensure that the user is registered</label>
     }
     else
     {
@@ -38,5 +38,8 @@
     }
 </form>
 
+<div>
+    <a asp-controller="UserPhoto" asp-action="Index">Back to List</a>
+</div>
 @{
 }

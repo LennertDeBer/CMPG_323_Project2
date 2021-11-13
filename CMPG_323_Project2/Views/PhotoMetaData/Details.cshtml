@@ -50,6 +50,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="Model.MetadataId" class="btn btn-sm btn-primary">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@Model.metadataVm.PhotoId" class="btn btn-sm btn-primary">Edit</a> |
+    <a asp-controller="UserPhoto" asp-action="Index">Back to List</a>
 </div>

@@ -69,7 +69,7 @@ namespace CMPG_323_Project2.Controllers
             //_DBContext.Entry(metaDatum).State = EntityState.Modified;
             //_DBContext.SaveChanges();
 
-            return RedirectToAction("index");
+            return RedirectToAction("index", "UserPhoto");
         }
 
         [HttpGet]

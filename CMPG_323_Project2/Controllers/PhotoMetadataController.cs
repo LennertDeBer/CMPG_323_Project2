@@ -152,5 +152,32 @@ namespace CMPG_323_Project2.Controllers
             return View(pmVm);
           
         }
+
+        [HttpPost]
+        public IActionResult Search(string colNeed, string searchNeed)
+        {
+            List<MetaDatum> metadatas = _metaData.Find("SELECT *  FROM MetaData WHERE " + colNeed + " = '" + searchNeed + "'");
+            List<Photo> photoList = new List<Photo>();
+            List<PhotoViewModelMetaData> container = new List<PhotoViewModelMetaData>();
+            foreach (var record in metadatas)
+            {
+                PhotoViewModelMetaData tmp = new PhotoViewModelMetaData();
+                photoList.Add(_photo.GetById(record.PhotoId));
+                tmp.photoVm = _photo.GetById(record.PhotoId);
+                tmp.metadataVm = record;
+                container.Add(tmp);
+            }
+           
+            
+
+            //ViewBag.Message = searchNeed;
+
+            //List<MetaDatum> returnMeta = (List<MetaDatum>)(from m in metadatas
+            //                             where colNeed == searchNeed
+            //                             select new MetaDatum { MetadataId=m.MetadataId,Tags=m.Tags,CapturedBy=m.CapturedBy, CapturedDate =m.CapturedDate
+            //                             , Geolocation = m.Geolocation, PhotoId =m.PhotoId});
+            return View(container);
+
+        }
     }
 }
