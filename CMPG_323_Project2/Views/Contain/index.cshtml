@@ -24,7 +24,7 @@
 
             <input type="hidden" asp-for="@item.albumVm.AlbumId" name="AlbumId" />
             @*<input type="hidden" asp-for="@item.photoVm.PhotoId" name="IdP" />*@
-            <input type="submit" value="AddPhoto" />
+            <input type="submit" value="AddPhoto" class="btn btn-sm btn-success" />
             </form>
             break;
         }
@@ -35,7 +35,7 @@
 
 
 
-        @Html.ActionLink("Select Photo", "SelectPhoto", new { ViewBag.AlbumId }, new { @class = "btn btn-success"})
+        @Html.ActionLink("Add Photo", "SelectPhoto", new { ViewBag.AlbumId }, new { @class = "btn btn-success"})
 
         @*@Html.RouteLink("NewText","/Contain/SelectPhoto", new { ViewBag.AlbumId })*@
 
@@ -78,6 +78,6 @@
         </tr>
     }
 </table>
-
+<a asp-controller="ShareAlbum" asp-action="Index">Back to List</a>
 @{
 }

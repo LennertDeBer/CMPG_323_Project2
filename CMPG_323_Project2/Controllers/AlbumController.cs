@@ -43,7 +43,7 @@ namespace CMPG_323_Project2.Controllers
         {
             _album.Update(album);
 
-            return RedirectToAction("index");
+            return RedirectToAction("index","ShareAlbum");
         }
 
         [HttpGet]
@@ -93,7 +93,7 @@ namespace CMPG_323_Project2.Controllers
         {
             _album.Delete(album.AlbumId);
 
-            return RedirectToAction("index");
+            return RedirectToAction("index", "ShareAlbum");
         }
     }
 }

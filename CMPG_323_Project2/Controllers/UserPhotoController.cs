@@ -44,14 +44,13 @@ namespace CMPG_323_Project2.Controllers
 
             var usid=_UserManager.GetUserId(HttpContext.User);
             List<AspNetUser> accountusers=_user.GetAll();
-            List<UserPhoto> user_image_link=_link.Find("select * from(select *, row_number() over(partition by User_ID, Photo_ID order by Photo_ID) as row_number from[dbo].UserPhoto) as rows where row_number = 1");
+            List<UserPhoto> user_image_link=_link.Find("select * from(select *, row_number() over(partition by User_ID, Photo_ID, Recepient_User_ID  order by Photo_ID) as row_number from[dbo].UserPhoto) as rows where row_number = 1");
             List<Photo> images=_photo.GetAll();
             var userViewModelImages=from uil in user_image_link
                                       from u in accountusers
                                       from i in images
                                       where u.Id == usid
-                                      && (uil.UserId==u.Id
-                                      || uil.RecepientUserId==u.Id)
+                                      && (uil.RecepientUserId==u.Id)
                                       where uil.PhotoId==i.PhotoId
                                       select new UserViewModelPhoto { userVm=u, photoVm=i };
             return View(userViewModelImages);

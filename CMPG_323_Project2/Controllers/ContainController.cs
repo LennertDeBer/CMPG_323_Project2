@@ -179,7 +179,7 @@ namespace CMPG_323_Project2.Controllers
 
             _contain.Delete(contains.ContainId);
 
-            return RedirectToAction("index/"+contains.AlbumId);
+            return RedirectToAction("index",new { Id = contains.AlbumId });
         }
     }
 }

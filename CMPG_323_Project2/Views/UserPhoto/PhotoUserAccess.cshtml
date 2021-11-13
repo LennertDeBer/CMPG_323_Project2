@@ -7,7 +7,7 @@
         height: 175px;
     }
 </style>
-<form action="/MetaData/Search/?searchNeed&?colNeed" method="post">
+@*<form action="/MetaData/Search/?searchNeed&?colNeed" method="post">
     <select name="colNeed" id="Column">
         <option value="Geolocation">Geolocation</option>
         <option value="Tags">Tags</option>
@@ -16,10 +16,10 @@
     </select>
     <input type="text" name="searchNeed" />
     <input type="submit" value="Search" />
-</form>
-<p>
+</form>*@
+@*<p>
     <a asp-controller="PhotoMetaData" asp-action="Create">UploadImage</a>
-</p>
+</p>*@
 <table class="table table-striped">
     <tr>
         <td>User name</td>
@@ -35,14 +35,18 @@
     </td>
     <td>@item.userPhotoVm.RecepientUser.Email</td>
     <td>
-        <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@item.photoVm.PhotoId">Edit</a> |
+        <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-primary">Edit</a> |
 
-        <a asp-controller="PhotoMetaData" asp-action="Details" asp-route-id="@item.photoVm.PhotoId">Details</a> |
-        <a asp-controller="UserPhoto" asp-action="Delete" asp-route-Id="@item.userPhotoVm.ShareId">Delete</a>
+        <a asp-controller="PhotoMetaData" asp-action="Details" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-info">Details</a> |
+        <a asp-controller="UserPhoto" asp-action="Delete" asp-route-Id="@item.userPhotoVm.ShareId" class="btn btn-sm btn-danger">Delete</a>
     </td>
 </tr>
     }
 </table>
+
+<div>
+    <a asp-controller="UserPhoto" asp-action="Index">Back to List</a>
+</div>
 
 @{
 }

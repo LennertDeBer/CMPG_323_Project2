@@ -8,7 +8,7 @@
     }
 </style>
 <p>
-    <a asp-action="Create">Create album</a>
+    <a asp-action="Create" class="btn btn-sm btn-success">Create album</a>
 </p>
 @*@if(ViewBag.Awaiting > 0)
     {
@@ -29,15 +29,17 @@
 
             <td>
 
-                <a asp-controller="Album" asp-action="Edit" asp-route-id="@item.albumVm.AlbumId">Edit</a> |
-                <a asp-controller="Contain" asp-action="Index" asp-route-id="@item.albumVm.AlbumId">Open</a> |
+                <a asp-controller="Album" asp-action="Edit" asp-route-id="@item.albumVm.AlbumId" class="btn btn-sm btn-primary">Edit</a> |
+                <a asp-controller="Contain" asp-action="Index" asp-route-id="@item.albumVm.AlbumId" class="btn btn-sm btn-info">Open</a> |
 
-                <a asp-controller="Album" asp-action="Delete" asp-route-id="@item.albumVm.AlbumId">Delete</a>|
-                <a asp-controller="ShareAlbum" asp-action="ShareToUser" asp-route-id="@item.albumVm.AlbumId">Share</a>
+                <a asp-controller="Album" asp-action="Delete" asp-route-id="@item.albumVm.AlbumId" class="btn btn-sm btn-danger">Delete</a>|
+                <a asp-controller="ShareAlbum" asp-action="ShareToUser" asp-route-id="@item.albumVm.AlbumId" class="btn btn-sm btn-light">Share</a>
             </td>
         </tr>
     }
 </table>
-
+<div>
+    <a asp-controller="ShareAlbum" asp-action="Index">Back to List</a>
+</div>
 @{
 }
