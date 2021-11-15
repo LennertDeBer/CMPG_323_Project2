@@ -156,19 +156,19 @@ namespace CMPG_323_Project2.Controllers
         [HttpPost]
         public IActionResult Search(string colNeed, string searchNeed)
         {
+            var usid = _UserManager.GetUserId(HttpContext.User);
             List<MetaDatum> metadatas = _metaData.Find("SELECT *  FROM MetaData WHERE " + colNeed + " = '" + searchNeed + "'");
-            List<Photo> photoList = new List<Photo>();
-            List<PhotoViewModelMetaData> container = new List<PhotoViewModelMetaData>();
-            foreach (var record in metadatas)
-            {
-                PhotoViewModelMetaData tmp = new PhotoViewModelMetaData();
-                photoList.Add(_photo.GetById(record.PhotoId));
-                tmp.photoVm = _photo.GetById(record.PhotoId);
-                tmp.metadataVm = record;
-                container.Add(tmp);
-            }
-           
-            
+            List<Photo> photoList = _photo.GetAll();
+            List<UserPhoto> user_image_link = _link.Find("select * from(select *, row_number() over(partition by User_ID, Photo_ID, Recepient_User_ID  order by Photo_ID) as row_number from[dbo].UserPhoto) as rows where row_number = 1");
+            var container = from uil in user_image_link
+                            from m in metadatas
+                            from i in photoList
+                            where uil.RecepientUserId == usid
+                            where uil.PhotoId == i.PhotoId
+                            where m.PhotoId == i.PhotoId
+                            select new PhotoViewModelMetaData { metadataVm = m, photoVm = i };
+
+
 
             //ViewBag.Message = searchNeed;
 
