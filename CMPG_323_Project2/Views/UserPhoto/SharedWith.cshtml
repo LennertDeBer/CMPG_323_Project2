@@ -16,13 +16,20 @@
     </tr>
     @foreach (var item in Model)
     {
-        <tr>
-            <td>@item.userVm.UserName</td>
-            <td>
-                <img src="@item.photoVm.PhotoUrl" alt="@item.photoVm.PhotoUrl" class="avatar" />
-            </td>
-            
-        </tr>
+<tr>
+    <td>@item.userVm.UserName</td>
+    <td>
+        <img src="@item.photoVm.PhotoUrl" alt="@item.photoVm.PhotoUrl" class="avatar" />
+    </td>
+    <td>
+        <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-primary">Edit</a> |
+
+        <a asp-controller="PhotoMetaData" asp-action="Details" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-info">Details</a> |
+        <a asp-controller="Photo" asp-action="Delete" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-danger">Delete</a> |
+        <a asp-controller="UserPhoto" asp-action="ShareTo" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-light">Share</a> |
+        <a asp-controller="UserPhoto" asp-action="Download" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-outline-dark">Download</a>
+    </td>
+</tr>
     }
 </table>
 <div>
