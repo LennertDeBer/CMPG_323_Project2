@@ -19,8 +19,10 @@ namespace CMPG_323_Project2.Logic
         public async Task Upload(FileModel model,int Id)
         {
             var blobContainer = _blobServiceClient.GetBlobContainerClient("uploadimage");
-            var blobClient = blobContainer.GetBlobClient(Id.ToString());
-          
+            string tmp = model.MyFile.FileName;
+            string extention = tmp.Substring(tmp.IndexOf('.'));
+            var blobClient = blobContainer.GetBlobClient(Id.ToString()+extention);
+           
             await blobClient.UploadAsync(model.MyFile.OpenReadStream());
         }
         public string read(string filename)

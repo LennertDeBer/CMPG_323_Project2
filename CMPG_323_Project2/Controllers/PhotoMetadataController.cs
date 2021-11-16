@@ -69,8 +69,10 @@ namespace CMPG_323_Project2.Controllers
                 auid = auNo;
             }
             await _fileManagerLogic.Upload(photoViewModelMeta.fileModelVm, auid);
+            string tmp = photoViewModelMeta.fileModelVm.MyFile.FileName;
+            string extention = tmp.Substring(tmp.IndexOf('.')); 
 
-            string Url = _fileManagerLogic.read(auid.ToString());
+            string Url = _fileManagerLogic.read(auid.ToString()+extention);
             photoViewModelMeta.photoVm.PhotoId = auid;
             photoViewModelMeta.photoVm.PhotoUrl = Url;
            _photo.Insert(photoViewModelMeta.photoVm);

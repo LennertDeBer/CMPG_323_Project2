@@ -211,8 +211,11 @@ namespace CMPG_323_Project2.Controllers
 
         public async Task<IActionResult> Download(int id)
         {
-            var result = await _fileManagerLogic.GetData(id.ToString());
-            return File(result, "application/octet-stream");
+            Photo p = _photo.GetById(id);
+            string url = p.PhotoUrl;
+            string filename = url.Substring(url.LastIndexOf('/') + 1);
+            var result = await _fileManagerLogic.GetData(filename);
+            return File(result, "application/octet-stream",filename);
         }
 
 
