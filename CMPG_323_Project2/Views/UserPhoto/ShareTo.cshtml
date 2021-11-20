@@ -27,7 +27,8 @@
 <form action="/UserPhoto/ShareTo/?PId&?Email" method="post">
     <input type="hidden" asp-for="photoVm.PhotoId" name="PId" />
     <input type="text" name="Email" />
-    <input type="submit" value="Share" class="btn btn-sm btn-light" />
+    <input type="submit" value="Share" class="btn btn-sm btn-light" /> |
+    <a asp-controller="UserPhoto" asp-action="Index">Back</a>
     @if (ViewBag.Message == "userNF")
     {
         <label>User not found, please ensure that the user is registered</label>
@@ -37,9 +38,5 @@
         <label>@ViewBag.Message</label>
     }
 </form>
-
-<div>
-    <a asp-controller="UserPhoto" asp-action="Index">Back to List</a>
-</div>
 @{
 }
