@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <label asp-for="fileModelVm.MyFile" class="control-label"></label>
                     @*origanil*@ @*<input asp-for="MyFile" class="form-control-file" />*@
-                    <input id="MyInput" asp-for="fileModelVm.MyFile" class="form-control-file" onchange="document.getElementById('DisplayUpload').src = window.URL.createObjectURL(this.files[0]); checkFile()">
+                    <input id="MyInput" asp-for="fileModelVm.MyFile" class="form-control-file" onchange="document.getElementById('DisplayUpload').src = window.URL.createObjectURL(this.files[0]); checkFile()" required>
                     @*  *@
                     <span asp-validation-for="fileModelVm.MyFile" class="text-danger"></span>
 
@@ -99,7 +99,7 @@
 
 
 <div>
-    <a asp-controller="UserPhoto" asp-action="Index">Back to List</a>
+    <a asp-controller="UserPhoto" asp-action="Index">Back</a>
 </div>
 <script type="text/javascript">
     function checkFile() {

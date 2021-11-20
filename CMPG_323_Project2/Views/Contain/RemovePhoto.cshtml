@@ -14,29 +14,21 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.albumVm.AlbumName)
         </dt>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.containVm.ContainId)
-        </dt>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.photoVm.PhotoUrl)
-        </dt>
+      
 
 
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.albumVm.AlbumName)
         </dd>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model =>model.containVm.ContainId)
-        </dd>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.photoVm.PhotoUrl)
-        </dd>
+       
     </dl>
     <form action="/Contain/RemovePhoto/?IdC" method="post">
 
 
         <input type="hidden" asp-for="containVm.ContainId" name="IdC" />
-        <input type="submit" value="RemovePhoto" class="btn btn-sm btn-danger"/>
+        <input type="hidden" asp-for="albumVm.AlbumId" name="IdA" />
+        <input type="submit" value="RemovePhoto" class="btn btn-sm btn-danger" /> |
+        <a asp-controller="Contain" asp-action="Index" asp-route-id="@Model.albumVm.AlbumId">Back</a>
     </form>
 
 </div>

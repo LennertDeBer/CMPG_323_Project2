@@ -21,7 +21,8 @@
 <form action="/ShareAlbum/ShareToUser/?AId&?Email" method="post">
     <input type="hidden" asp-for="albumVm.AlbumId" name="AId" />
     <input type="text" name="Email" />
-    <input type="submit" value="Share" class="btn btn-sm btn-light"/>
+    <input type="submit" value="Share" class="btn btn-sm btn-light" /> |
+    <a asp-controller="ShareAlbum" asp-action="Index">Back</a>
     @if (ViewBag.Message == "userNF")
     {
         <label>User not found</label>
@@ -31,7 +32,6 @@
         <label>@ViewBag.Message</label>
     }
 </form>
-<a asp-controller="ShareAlbum" asp-action="Index">Back to List</a>
 @{
 }
 @{

@@ -16,20 +16,16 @@
             <input type="hidden" asp-for="AlbumId" />
             <div class="form-group">
                 <label asp-for="AlbumName" class="control-label"></label>
-                <input asp-for="AlbumName" class="form-control" />
+                <input asp-for="AlbumName" class="form-control" required/>
                 <span asp-validation-for="AlbumName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-sm btn-primary"/>
+                <input type="submit" value="Save" class="btn btn-sm btn-primary" /> |
+                <a asp-controller="ShareAlbum" asp-action="Index">Back</a>
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-controller = "ShareAlbum" asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

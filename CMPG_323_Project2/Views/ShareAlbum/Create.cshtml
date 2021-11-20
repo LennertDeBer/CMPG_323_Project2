@@ -21,7 +21,7 @@
                 </div>*@
             <div class="form-group">
                 <label asp-for="albumVm.AlbumName" class="control-label"></label>
-                <input asp-for="albumVm.AlbumName" class="form-control" />
+                <input asp-for="albumVm.AlbumName" class="form-control" required/>
                 <span asp-validation-for="albumVm.AlbumName" class="text-danger"></span>
             </div>
             @if (ViewBag.Message!=null)
@@ -29,17 +29,13 @@
                 <label>@ViewBag.Message</label>
             }
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-sm btn-success"/>
-            </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-sm btn-success" /> |
+            <a asp-action="Index">Back</a>
+        </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
