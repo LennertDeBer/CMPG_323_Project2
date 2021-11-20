@@ -51,15 +51,12 @@
 <table class="table table-striped">
     <tr>
         <d>
-            <td>CID</td>
             <td>album name</td>
             <td>Photo's</td>
     </tr>
     @foreach (var item in Model)
     {
         <tr>
-            <td>@item.containVm.ContainId</td>
-
             <td>@item.albumVm.AlbumName</td>
             <td>
                 <img src="@item.photoVm.PhotoUrl" alt="@item.photoVm.PhotoUrl" class="avatar" />
