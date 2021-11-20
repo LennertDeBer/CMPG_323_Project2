@@ -12,12 +12,6 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.photoVm.PhotoUrl)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.photoVm.PhotoUrl)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.metadataVm.Geolocation)
         </dt>
         <dd class="col-sm-10">
@@ -41,14 +35,9 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.metadataVm.CapturedBy)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.metadataVm.Photo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.metadataVm.PhotoId)
-        </dd>
     </dl>
 </div>
+<input type="hidden" value=model.metadataVm.PhotoId />
 <div>
     <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@Model.metadataVm.PhotoId" class="btn btn-sm btn-primary">Edit</a> |
     <a asp-controller="UserPhoto" asp-action="Index">Back to List</a>

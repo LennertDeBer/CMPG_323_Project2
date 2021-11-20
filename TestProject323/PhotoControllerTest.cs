@@ -15,7 +15,7 @@ using Xunit;
 
 namespace TestProject323
 {
-    public class UnitTest1
+    public class PhotoControllerTest
     {
         private List<Photo> list = new List<Photo>() {new Photo{
         PhotoId=1,
