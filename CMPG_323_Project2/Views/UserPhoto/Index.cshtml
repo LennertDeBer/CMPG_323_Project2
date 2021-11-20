@@ -20,6 +20,7 @@
 <p>
     <a asp-controller="PhotoMetaData" asp-action="Create" class="btn btn-sm btn-success">UploadImage</a>
 </p>
+
 <table class="table table-striped">
     <tr>
         <td>User name</td>
@@ -33,6 +34,7 @@
         <img src="@item.photoVm.PhotoUrl" alt="@item.photoVm.PhotoUrl" class="avatar" />
     </td>
     <td>
+        <input type="hidden" value="@item.photoVm.PhotoUrl" />
         <a asp-controller="MetaData" asp-action="Edit" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-primary">Edit</a> |
 
         <a asp-controller="PhotoMetaData" asp-action="Details" asp-route-id="@item.photoVm.PhotoId" class="btn btn-sm btn-info">Details</a> |

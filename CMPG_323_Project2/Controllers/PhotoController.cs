@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace CMPG_323_Project2.Controllers
@@ -89,10 +90,12 @@ namespace CMPG_323_Project2.Controllers
             return View(photo);
         }
         [HttpPost]
-        public IActionResult Delete(Photo photo)
+        public async Task<IActionResult> Delete(Photo photo)
         {
+            string name = photo.PhotoUrl.ToString();
+           string search= name.Substring(name.LastIndexOf('/')+1);
             _photo.Delete(photo.PhotoId);
-          _fileManagerLogic.Delete(photo.PhotoId.ToString());
+            await _fileManagerLogic.Delete(search);
             //_DBContext.Attach(photo);
             //_DBContext.Entry(photo).State = EntityState.Deleted;
             //_DBContext.SaveChanges();
