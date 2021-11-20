@@ -162,8 +162,8 @@ namespace CMPG_323_Project2.Controllers
         }
         private int photoToMeta(int Id)
         {
-            MetaDatum md=_metaData.GetById(Id);
-            return md.MetadataId;
+            List<MetaDatum> md=_metaData.Find("SELECT *  FROM MetaData WHERE Photo_ID = " + Id + " ");
+            return md[0].MetadataId;
         }
 
         //[HttpGet("/PhotoMetaData/Details/{id}&{urlds}")]
