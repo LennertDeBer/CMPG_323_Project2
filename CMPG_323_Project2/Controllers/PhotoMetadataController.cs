@@ -43,7 +43,31 @@ namespace CMPG_323_Project2.Controllers
             return View(photoViewModelMetaData);
 
         }
-
+        private int validateId(int Id)
+        {
+            int tmp = 0;
+            bool vl = false;
+            List<int> v = _fileManagerLogic.loop();
+            foreach (int id in v)
+            {
+                if(tmp<=id)
+                {
+                    tmp = id;
+                }
+                if(id==Id)
+                {
+                    vl = true;
+                }
+            }
+            if(vl)
+            {
+                return ++tmp;
+            }
+            else
+            {
+                return Id;
+            }
+        }
         [HttpPost]
         public async Task<IActionResult> Create(PhotoViewModelMetaData photoViewModelMeta)
         {
@@ -68,6 +92,7 @@ namespace CMPG_323_Project2.Controllers
                 auNo++;
                 auid = auNo;
             }
+            auid = validateId(auid);
             await _fileManagerLogic.Upload(photoViewModelMeta.fileModelVm, auid);
             string tmp = photoViewModelMeta.fileModelVm.MyFile.FileName;
             string extention = tmp.Substring(tmp.IndexOf('.')); 

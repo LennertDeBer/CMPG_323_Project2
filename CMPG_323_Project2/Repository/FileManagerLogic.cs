@@ -32,6 +32,22 @@ namespace CMPG_323_Project2.Logic
 
             return blobClient.Uri.ToString();
         }
+        public List<int> loop()
+        {
+            List<int> v =new List<int>();
+            var blobContainer = _blobServiceClient.GetBlobContainerClient("uploadimage");
+            var blobClient = blobContainer.GetBlobs();
+            foreach (var item in blobClient)
+            {
+                string name = item.Name;
+                string num = name.Substring(0,name.IndexOf('.'));
+               int tmp = int.Parse(num);
+                v.Add(tmp);
+
+            }
+
+            return   v;
+        }
 
         public async Task<byte[]> GetData(string filename)
         {
