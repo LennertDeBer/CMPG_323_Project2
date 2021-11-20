@@ -88,19 +88,15 @@
             <span asp-validation-for="photoVm.PhotoId" class="text-danger"></span>*@
                 @*<select asp-for="PhotoId" class="form-control" asp-items="ViewBag.PhotoId"></select>*@
 
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-sm btn-success" />
-                </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-sm btn-success" /> |
+            <a asp-controller="UserPhoto" asp-action="Index">Back</a>
+        </div>
             </form>
 
 
 </div>
         </div>
-
-
-<div>
-    <a asp-controller="UserPhoto" asp-action="Index">Back</a>
-</div>
 <script type="text/javascript">
     function checkFile() {
 
