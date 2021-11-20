@@ -36,9 +36,9 @@ namespace CMPG_323_Project2.Controllers
         public IActionResult Edit(int Id)
         {
             
-            MetaDatum metaDatum=_meta.GetById(Id);
+            List<MetaDatum> metaDatum=_meta.Find("SELECT *  FROM MetaData WHERE Photo_ID = " + Id + " ");
 
-            return View(metaDatum);
+            return View(metaDatum[0]);
         }
 
         //[HttpGet]
