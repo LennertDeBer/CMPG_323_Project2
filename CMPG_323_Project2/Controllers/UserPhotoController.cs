@@ -42,6 +42,7 @@ namespace CMPG_323_Project2.Controllers
         {
 
 
+           
             var usid=_UserManager.GetUserId(HttpContext.User);
             List<AspNetUser> accountusers=_user.GetAll();
             List<UserPhoto> user_image_link=_link.Find("select * from(select *, row_number() over(partition by User_ID, Photo_ID, Recepient_User_ID  order by Photo_ID) as row_number from[dbo].UserPhoto) as rows where row_number = 1");
@@ -150,7 +151,7 @@ namespace CMPG_323_Project2.Controllers
 
             var usid = _UserManager.GetUserId(HttpContext.User);
             List<AspNetUser> accountusers=_user.GetAll();
-            List<UserPhoto> user_image_link=_link.GetAll();
+            List<UserPhoto> user_image_link = _link.Find("select * from(select *, row_number() over(partition by Recepient_User_ID, Photo_ID order by Photo_ID) as row_number from[dbo].UserPhoto) as rows where row_number = 1");
             List<Photo> images=_photo.GetAll();
             var userViewModelImages = from uil in user_image_link
                                       from u in accountusers
@@ -172,8 +173,8 @@ namespace CMPG_323_Project2.Controllers
 
                 var usid=_UserManager.GetUserId(HttpContext.User);
                 List<AspNetUser> accountusers=_user.GetAll();
-                List<UserPhoto> user_image_link=_link.GetAll();
-                List<Photo> images=_photo.GetAll();
+                List<UserPhoto> user_image_link= _link.Find("select * from(select *, row_number() over(partition by User_ID, Recepient_User_ID, Photo_ID order by Photo_ID) as row_number from[dbo].UserPhoto) as rows where row_number = 1");
+            List<Photo> images=_photo.GetAll();
                 var userViewModelImages = from uil in user_image_link
                                           from u in accountusers
                                           from sender in accountusers

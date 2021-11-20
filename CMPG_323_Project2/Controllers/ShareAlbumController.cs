@@ -28,10 +28,22 @@ namespace CMPG_323_Project2.Controllers
         }
         public IActionResult Index()
         {
+            //var usid = _UserManager.GetUserId(HttpContext.User);
+            //List<AspNetUser> accountusers = _user.GetAll();
+            //List<UserPhoto> user_image_link = _link.Find("select * from(select *, row_number() over(partition by User_ID, Photo_ID, Recepient_User_ID  order by Photo_ID) as row_number from[dbo].UserPhoto) as rows where row_number = 1");
+            //List<Photo> images = _photo.GetAll();
+            //var userViewModelImages = from uil in user_image_link
+            //                          from u in accountusers
+            //                          from i in images
+            //                          where u.Id == usid
+            //                          && (uil.RecepientUserId == u.Id)
+            //                          where uil.PhotoId == i.PhotoId
+            //                          select new UserViewModelPhoto { userVm = u, photoVm = i };
+            //return View(userViewModelImages);
             var usid = _UserManager.GetUserId(HttpContext.User);
             List<AspNetUser> accountusers = _user.GetAll();
 
-            List<ShareAlbum> albumuser = _share.Find("select * from( select *, row_number() over(partition by User_ID,Recipient_User_ID, Album_ID order by Share_Album_ID) as row_number from[dbo].[Share_Album] ) as rows where row_number = 1");
+            List<ShareAlbum> albumuser = _share.Find("select * from( select *, row_number() over(partition by Recipient_User_ID, Album_ID order by Share_Album_ID) as row_number from[dbo].[Share_Album] ) as rows where row_number = 1");
             //List<ShareAlbum> albumuser = _DBContext.ShareAlbums.ToList();
             List<Album> albums = _album.Find("select * from( select *, row_number() over(partition by Album_Name order by Album_ID) as row_number from[dbo].[Album] ) as rows where row_number = 1"); ;
             var userViewModelImages = from au in albumuser

@@ -19,15 +19,17 @@ namespace CMPG_323_Project2.Controllers
         private readonly IGenericRepository<Contain> _contain;
         private readonly IGenericRepository<Album> _album;
         private readonly IGenericRepository<Photo> _photo;
-        private readonly IGenericRepository<UserPhoto> _userPhoto;
+        private readonly IGenericRepository<AspNetUser> _user;
+        private readonly IGenericRepository<UserPhoto> _link;
         private readonly UserManager<AppUser> _UserManager;
-        public ContainController(IGenericRepository<Contain> contain, IGenericRepository<Album> album, IGenericRepository<Photo> photo, IGenericRepository<UserPhoto> userPhoto, UserManager<AppUser> UserManager)
+        public ContainController(IGenericRepository<Contain> contain, IGenericRepository<Album> album, IGenericRepository<Photo> photo, IGenericRepository<UserPhoto> userPhoto, UserManager<AppUser> UserManager, IGenericRepository<AspNetUser> user)
         {
             _contain = contain;
             _album = album;
             _photo = photo;
-            _userPhoto = userPhoto;
+            _link = userPhoto;
             _UserManager = UserManager;
+            _user = user;
         }
 
         public IActionResult Index(int Id)
@@ -122,7 +124,7 @@ namespace CMPG_323_Project2.Controllers
         public IActionResult RemovePhoto(int IdA,int IdP,int IdC)
         {
             Photo photos = _photo.GetById(IdP);
-           Contain contains = _contain.GetAll().FirstOrDefault();
+           Contain contains = _contain.GetById(IdC);
             Album albums = _album.GetById(IdA);
             AlbumViewModelPhoto albumViewModelPhoto = new AlbumViewModelPhoto();
             albumViewModelPhoto.albumVm = albums;
@@ -142,36 +144,30 @@ namespace CMPG_323_Project2.Controllers
         [HttpGet]
         public IActionResult SelectPhoto(int AlbumId) 
         {
-            var usid = _UserManager.GetUserId(HttpContext.User);
-           // List<AspNetUser> accountusers = _DBContext.AspNetUsers.ToList();
-            List<UserPhoto> user_image_link = _userPhoto.GetAll();
-            //List<Photo> images = _DBContext.Photos.ToList();
-            //var userViewModelImages = from uil in user_image_link
-            //                          from u in accountusers
-            //                          from i in images
-            //                          where u.Id == usid
-            //                          && (uil.UserId == u.Id)
-            //                          where uil.PhotoId == i.PhotoId
-            //                          select new UserViewModelPhoto { userVm = u, photoVm = i };
-            List<Photo> photos = _photo.GetAll();
-            List<Album> albums = _album.GetAll();
-     
-            var albumViewModelPhoto =   from p in photos
-                                        from a in albums
-                                        from al in user_image_link
-                                        where a.AlbumId == AlbumId
-                                        where al.UserId== usid
-                                       where al.PhotoId==p.PhotoId
+            Album currentAlbum = _album.GetById(AlbumId);
+  
 
-                                        select new AlbumViewModelPhoto { albumVm = a, photoVm = p };
+            var usid = _UserManager.GetUserId(HttpContext.User);
+            List<AspNetUser> accountusers = _user.GetAll();
+            List<UserPhoto> user_image_link = _link.Find("select * from(select *, row_number() over(partition by User_ID, Photo_ID, Recepient_User_ID  order by Photo_ID) as row_number from[dbo].UserPhoto) as rows where row_number = 1");
+            List<Photo> images = _photo.GetAll();
+            var userViewModelImages = from uil in user_image_link
+                                      from u in accountusers
+                                      from i in images
+                                      where u.Id == usid
+                                      && (uil.RecepientUserId == u.Id)
+                                      where uil.PhotoId == i.PhotoId
+                                      select new AlbumViewModelPhoto { albumVm = currentAlbum, photoVm = i };
+            return View(userViewModelImages); 
                                        
-            return View(albumViewModelPhoto);
+
         }
         [HttpPost]
         public IActionResult SelectPhoto(int IdA, int IdP)
         {
             return View();
         }
+       
         [HttpPost]
         public IActionResult RemovePhoto(int IdC)
         {
